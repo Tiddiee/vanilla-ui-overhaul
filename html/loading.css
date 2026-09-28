@@ -1,20 +1,37 @@
-/* =========================================================
-   NightFrame Theme — Loading Screen
-   loading.css
-========================================================= */
+@font-face {
+    font-family: 'Roboto';
+    src: url('fonts/Roboto-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('fonts/Roboto-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('fonts/Roboto-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+}
 
 BODY {
     overflow: hidden;
     margin: 0px;
     background-position: center;
     background-size: cover;
-    background-color: #0a0c16;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: #080a12;
+    font-family: 'Roboto', 'Segoe UI', 'Noto Sans', 'Helvetica Neue', Arial, sans-serif;
+    letter-spacing: 0.06em;
     -webkit-user-select: none;
+    -webkit-font-smoothing: antialiased;
     color: #d8e8ff;
 }
-
-/* ── Background ──────────────────────────────────────── */
 
 #background {
     background-image: url('img/bg.png');
@@ -28,29 +45,26 @@ body.dark {
     color: #d8e8ff;
 }
 
-/* Arka plan üzerine koyu gradient overlay (harita resmi yüklenince okunabilirlik) */
 #background::after {
     content: '';
     position: fixed;
     inset: 0;
     background: linear-gradient(
         to bottom,
-        rgba(10, 12, 22, 0.72) 0%,
-        rgba(10, 12, 22, 0.45) 40%,
-        rgba(10, 12, 22, 0.45) 70%,
-        rgba(10, 12, 22, 0.80) 100%
+        rgba(8, 10, 18, 0.75) 0%,
+        rgba(8, 10, 18, 0.45) 35%,
+        rgba(8, 10, 18, 0.45) 70%,
+        rgba(8, 10, 18, 0.82) 100%
     );
     pointer-events: none;
     z-index: 0;
 }
 
-/* ── Logo ve Spinner ─────────────────────────────────── */
-
 #container {
     position: absolute;
     text-align: center;
     left: 50%;
-    top: 45%;
+    top: 35%;
     margin-top: -120px;
     margin-left: -150px;
     width: 300px;
@@ -62,105 +76,104 @@ body.dark {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 1.25em;
-    filter: drop-shadow(0 4px 24px rgba(35, 135, 237, 0.35));
+    filter: drop-shadow(0 4px 24px rgba(var(--vuo-a, 35, 135, 237), 0.38));
 }
 
-/* :v spinner — tema rengiyle */
 @-webkit-keyframes walk {
     0%   { -webkit-transform: rotateZ(0deg); }
     100% { -webkit-transform: rotateZ(360deg); }
 }
-
 .walk {
     -webkit-animation: walk 10s linear infinite;
     text-align: center;
-    background-color: rgba(35, 135, 237, 0.10);
+    background-color: rgba(var(--vuo-a, 35, 135, 237), 0.10);
     width: 24px;
     height: 24px;
-    color: rgba(35, 135, 237, 0.60);
+    color: rgba(var(--vuo-a, 35, 135, 237), 0.65);
     font-size: 16px;
     font-family: arial, sans-serif;
     font-weight: bold;
     border-radius: 4px;
     display: inline-block;
-    border: 1px solid rgba(35, 135, 237, 0.30);
+    border: 1px solid rgba(var(--vuo-a, 35, 135, 237), 0.30);
 }
-
-/* ── Server Info (Sol Üst) ───────────────────────────── */
 
 .server_info {
     position: absolute;
-    top: 0;
-    left: 0;
-    display: inline-block;
-    background: linear-gradient(
-        to right,
-        rgba(10, 12, 22, 0.78) 0%,
-        rgba(10, 12, 22, 0.35) 75%,
-        rgba(10, 12, 22, 0.00) 100%
-    );
-    padding: 18px 140px 18px 18px;
+    top: 16px;
+    left: 16px;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+
+    background: rgba(8, 10, 18, 0.70);
+    border: 1px solid rgba(var(--vuo-a, 35, 135, 237), 0.18);
+    border-radius: 10px;
+    padding: 0;
     visibility: hidden;
     white-space: nowrap;
-    max-width: 100%;
     box-sizing: border-box;
+    transform: scale(var(--ld-info, 1));
+    transform-origin: top left;
     z-index: 10;
-    border-bottom: 1px solid rgba(35, 135, 237, 0.12);
+    box-shadow:
+        0 4px 24px rgba(0, 0, 0, 0.60),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    overflow: hidden;
 }
-
 .server_info.visible {
     visibility: visible;
 }
 
 #mapimg {
-    width: 100px;
-    height: 100px;
-    float: left;
-    margin-right: 16px;
-    border-radius: 4px;
-    border: 1px solid rgba(35, 135, 237, 0.30);
-    background: rgba(10, 12, 22, 0.60);
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    border-radius: 0;
+    border: none;
+    border-right: 1px solid rgba(var(--vuo-a, 35, 135, 237), 0.15);
+    background: rgba(8, 10, 18, 0.65);
     object-fit: cover;
+    display: block;
 }
 
 .server_info .text {
-    display: inline-block;
-    vertical-align: top;
-    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 12px 18px;
+    gap: 3px;
 }
 
-/* Sunucu adı */
 #serverName {
-    font-size: 22px;
-    font-weight: bold;
-    color: #e8f0ff;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 0 20px rgba(35, 135, 237, 0.15);
-    letter-spacing: -0.3px;
-    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(225, 238, 255, 0.95);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.90);
+    letter-spacing: 0.05em;
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width: 600px;
+    max-width: 340px;
+    margin: 0;
 }
 
-/* Harita adı */
 #serverMap {
-    font-size: 14px;
-    color: rgba(160, 190, 230, 0.80);
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
-    margin-top: 4px;
-}
-
-/* Gamemode */
-#serverGamemode {
     font-size: 12px;
-    color: rgba(35, 135, 237, 0.70);
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin-top: 2px;
+    font-weight: 400;
+    color: rgba(160, 190, 230, 0.75);
+    letter-spacing: 0.05em;
+    margin: 0;
 }
 
-/* ── Spam/Log Kutusu ─────────────────────────────────── */
+#serverGamemode {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(var(--vuo-a, 35, 135, 237), 0.85);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0;
+}
 
 #spambox {
     position: absolute;
@@ -169,28 +182,26 @@ body.dark {
     float: right;
     overflow: hidden;
     max-height: 200px;
-    color: rgba(160, 185, 225, 0.35);
+    color: rgba(160, 185, 225, 0.30);
     font-size: 11px;
     text-align: right;
     z-index: 10;
 }
 
-/* ── HTML Progress Bar (FastDL/ServerDL) ─────────────── */
-
 .progressbar {
     margin: 0 auto;
     width: 220px;
-    border-radius: 3px;
+    border-radius: 9999px;
     text-align: left;
     padding: 1px;
     background-color: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(35, 135, 237, 0.20);
+    border: 1px solid rgba(var(--vuo-a, 35, 135, 237), 0.20);
     float: right;
+    overflow: hidden;
 }
-
 .progressbar .inner {
-    border-radius: 2px;
-    background-color: rgba(35, 135, 237, 0.90);
+    border-radius: 9999px;
+    background-color: rgba(var(--vuo-a, 35, 135, 237), 0.90);
     background-image: none;
     width: 0.2%;
     height: 4px;
@@ -204,7 +215,6 @@ body.dark {
     margin: 0 auto;
     text-align: right;
     font-size: 11px;
-    font-family: helvetica;
     color: rgba(160, 185, 225, 0.40);
     letter-spacing: 0px;
     text-shadow: none;

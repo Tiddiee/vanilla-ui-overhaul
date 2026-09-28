@@ -2,8 +2,8 @@
 
 A redesigned main menu. Choose your own fonts, backgrounds, music and layout.
 
-> **Beta** - things might change. Bug reports welcome via [Issues](https://github.com/qudeowl/vanilla-ui-overhaul/issues).
-> 
+> Bug reports welcome via [Issues](https://github.com/qudeowl/vanilla-ui-overhaul/issues).
+
 ## Installation
 
 **Automatic (Recommended)**
@@ -24,6 +24,7 @@ A redesigned main menu. Choose your own fonts, backgrounds, music and layout.
 **Manual (Alternative)**
 1. Download the zip from the [latest release](https://github.com/qudeowl/vanilla-ui-overhaul/releases/latest)
 2. Extract and drop the `garrysmod` folder into `...\Steam\steamapps\common\GarrysMod\garrysmod\addons`
+3. For the startup screen, move `addons\garrysmod\addons\Vanilla_UI_StartupScreen` to `...\garrysmod\addons` and `addons\garrysmod\workshop` to `...\garrysmod`
 > The alternative installation method avoids modifying game files and reduces issues caused by official updates. However, some interface elements may be unavailable or may not work as expected, as they may be ignored by the game.
 
 ---
@@ -39,12 +40,14 @@ A redesigned main menu. Choose your own fonts, backgrounds, music and layout.
 **Manual**
 
 1. Verify game files on Steam
-2. If you installed v1.0, also delete `spawnmenu_theme.lua` from `...\garrysmod\lua\autorun\client" if it exists`
+2. Delete `...\garrysmod\addons\Vanilla_UI_StartupScreen` and `...\garrysmod\workshop\materials\console`
+3. If you installed v1.0, also delete `spawnmenu_theme.lua` from `...\garrysmod\lua\autorun\client` if it exists
 
 **Manual (Alternative)**
 
 1. Go to `...\Steam\steamapps\common\GarrysMod\garrysmod\addons`
-2. Delete its folder
+2. Delete the `garrysmod` and `Vanilla_UI_StartupScreen` folders
+3. Delete `...\garrysmod\workshop\materials\console`
 > Follow alternative steps only if you installed the mod using the alternative installation method.
 
 ---

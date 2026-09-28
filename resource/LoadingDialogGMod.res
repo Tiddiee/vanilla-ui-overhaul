@@ -69,6 +69,17 @@
 		"defaultBgColor_override"	"0 0 0 0"
 		"defaultFgColor_override"	"0 0 0 0"
 	}
+	"SecondaryProgressLabel"
+	{
+		"ControlName"			"Label"
+		"fieldName"				"SecondaryProgressLabel"
+		"xpos"					"-9999"
+		"ypos"					"-9999"
+		"wide"					"1"
+		"tall"					"1"
+		"visible"				"0"
+		"labelText"				""
+	}
 	"Progress2"
 	{
 		"ControlName"			"ProgressBar"
@@ -80,5 +91,16 @@
 		"visible"				"0"
 		"fgcolor_override"		"0 0 0 0"
 		"bgcolor_override"		"0 0 0 0"
+	}
+	"TimeRemainingLabel"
+	{
+		"ControlName"			"Label"
+		"fieldName"				"TimeRemainingLabel"
+		"xpos"					"-9999"
+		"ypos"					"-9999"
+		"wide"					"1"
+		"tall"					"1"
+		"visible"				"0"
+		"labelText"				""
 	}
 }

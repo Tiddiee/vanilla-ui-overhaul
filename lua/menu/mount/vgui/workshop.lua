@@ -1,55 +1,212 @@
-
 PANEL.Base = "DPanel"
 
-local wsFont
+local pnlRocket = vgui.RegisterFile( "addon_rocket.lua" )
 
-if ( system.IsLinux() ) then
-	wsFont = "DejaVu Sans"
-elseif ( system.IsWindows() ) then
-	wsFont = "Tahoma"
-else
-	wsFont = "Helvetica"
+local function wsSettings()
+	local raw = file.Read( "vuo_settings.txt", "DATA" )
+	return raw and util.JSONToTable( raw ) or {}
 end
 
-surface.CreateFont( "WorkshopLarge", {
-	font		= wsFont,
-	size		= 19,
-	antialias	= true,
-	weight		= 800
-})
+local function wsColor( str, r, g, b )
+	if ( isstring( str ) ) then
+		local cr, cg, cb = string.match( str, "(%d+)%s*,%s*(%d+)%s*,%s*(%d+)" )
+		if ( cr and cg and cb ) then return tonumber( cr ), tonumber( cg ), tonumber( cb ) end
+	end
+	return r, g, b
+end
 
-local pnlRocket			= vgui.RegisterFile( "addon_rocket.lua" )
-local matProgressCog	= Material( "gui/progress_cog.png", "nocull smooth" )
-local matHeader			= Material( "gui/steamworks_header.png" )
+local function u16( s, o )
+	local a, b = string.byte( s, o + 1, o + 2 )
+	return ( a or 0 ) * 256 + ( b or 0 )
+end
+
+local function u32( s, o )
+	return u16( s, o ) * 65536 + u16( s, o + 2 )
+end
+
+local function wsFamilyName( path )
+
+	local f = file.Open( path, "rb", "GAME" )
+	if ( !f ) then return end
+
+	local head = f:Read( 12 ) or ""
+	local count = u16( head, 4 )
+	local dir = count > 0 and f:Read( count * 16 ) or ""
+	local tbl
+
+	for i = 0, count - 1 do
+		if ( string.sub( dir, i * 16 + 1, i * 16 + 4 ) == "name" ) then
+			f:Seek( u32( dir, i * 16 + 8 ) )
+			tbl = f:Read( u32( dir, i * 16 + 12 ) )
+			break
+		end
+	end
+
+	f:Close()
+	if ( !tbl ) then return end
+
+	local strings = u16( tbl, 4 )
+	local found
+
+	for i = 0, u16( tbl, 2 ) - 1 do
+		local rec = 6 + i * 12
+		if ( u16( tbl, rec ) == 3 and u16( tbl, rec + 6 ) == 1 ) then
+			local len, off = u16( tbl, rec + 8 ), strings + u16( tbl, rec + 10 )
+			local chars = {}
+			for j = 0, len - 2, 2 do
+				local c = u16( tbl, off + j )
+				if ( c < 32 or c > 126 ) then chars = nil break end
+				chars[ #chars + 1 ] = string.char( c )
+			end
+			if ( chars and #chars > 0 ) then
+				found = table.concat( chars )
+				if ( u16( tbl, rec + 4 ) == 0x409 ) then break end
+			end
+		end
+	end
+
+	return found
+
+end
+
+local function wsFontWorks( family )
+
+	local sample = "The quick brown fox 0123456789"
+
+	surface.CreateFont( "WorkshopProbe_" .. family, { font = family, size = 32 } )
+	surface.SetFont( "WorkshopProbe_" .. family )
+	local aw, ah = surface.GetTextSize( sample )
+
+	surface.CreateFont( "WorkshopProbeMissing", { font = "vuo_missing_font", size = 32 } )
+	surface.SetFont( "WorkshopProbeMissing" )
+	local bw, bh = surface.GetTextSize( sample )
+
+	return aw != bw or ah != bh
+
+end
+
+local function wsFonts( cfg )
+
+	local family
+
+	if ( isstring( cfg.font ) and cfg.font != "" and !string.find( cfg.font, "[/\\]" ) ) then
+		for _, ext in ipairs( { ".ttf", ".otf" } ) do
+			local path = "materials/vuo_fonts/" .. cfg.font .. ext
+			if ( file.Exists( path, "GAME" ) ) then
+				family = wsFamilyName( path )
+				break
+			end
+		end
+		if ( family and !wsFontWorks( family ) ) then family = nil end
+	end
+
+	local suffix = family and ( "_" .. family ) or ""
+
+	surface.CreateFont( "WorkshopLarge" .. suffix, {
+		font		= family or "Roboto Medium",
+		size		= 18,
+		antialias	= true,
+		weight		= 500
+	})
+
+	surface.CreateFont( "WorkshopSmall" .. suffix, {
+		font		= family or "Roboto",
+		size		= 13,
+		antialias	= true,
+		weight		= 400
+	})
+
+	return "WorkshopLarge" .. suffix, "WorkshopSmall" .. suffix
+
+end
+
+local cornerRadius = 8
+local cornerPixels = {}
+
+for py = 0, cornerRadius - 1 do
+	for px = 0, cornerRadius - 1 do
+		local d = math.sqrt( ( cornerRadius - px - 0.5 ) ^ 2 + ( cornerRadius - py - 0.5 ) ^ 2 )
+		local a = 1 - math.abs( d - ( cornerRadius - 0.5 ) )
+		if ( a > 0 ) then table.insert( cornerPixels, { px, py, a } ) end
+	end
+end
+
+local function RoundedOutline( x, y, w, h, col )
+
+	local r = cornerRadius
+
+	surface.SetDrawColor( col.r, col.g, col.b, col.a )
+	surface.DrawRect( x + r, y, w - r * 2, 1 )
+	surface.DrawRect( x + r, y + h - 1, w - r * 2, 1 )
+	surface.DrawRect( x, y + r, 1, h - r * 2 )
+	surface.DrawRect( x + w - 1, y + r, 1, h - r * 2 )
+
+	for _, p in ipairs( cornerPixels ) do
+		surface.SetDrawColor( col.r, col.g, col.b, col.a * p[3] )
+		surface.DrawRect( x + p[1], y + p[2], 1, 1 )
+		surface.DrawRect( x + w - 1 - p[1], y + p[2], 1, 1 )
+		surface.DrawRect( x + p[1], y + h - 1 - p[2], 1, 1 )
+		surface.DrawRect( x + w - 1 - p[1], y + h - 1 - p[2], 1, 1 )
+	end
+
+end
+
+local function Pill( x, y, w, h, frac, trackCol, fillCol )
+
+	draw.RoundedBox( h * 0.5, x, y, w, h, trackCol )
+
+	local fw = math.max( h, math.floor( w * math.Clamp( frac, 0, 1 ) ) )
+	draw.RoundedBox( h * 0.5, x, y, fw, h, fillCol )
+
+end
 
 AccessorFunc( PANEL, "m_bDrawProgress", "DrawProgress", FORCE_BOOL )
 
 function PANEL:Init()
 
+	local cfg = wsSettings()
+	local pr, pg, pb = wsColor( cfg.accentBlue, 35, 135, 237 )
+	local sr, sg, sb = wsColor( cfg.accentGreen, 60, 200, 140 )
+
+	local fontLarge, fontSmall = wsFonts( cfg )
+
+	self.BoxColor		= Color( 8, 10, 18, 179 )
+	self.BorderColor	= Color( pr, pg, pb, 46 )
+	self.TrackColor		= Color( 255, 255, 255, 18 )
+	self.FillColor		= Color( pr, pg, pb, 242 )
+	self.TotalFillColor	= Color( sr, sg, sb, 210 )
+
 	self.Label = self:Add( "DLabel" )
 	self.Label:SetText( "..." )
-	self.Label:SetFont( "WorkshopLarge" )
-	self.Label:SetTextColor( Color( 210, 230, 255, 220 ) )  -- NightFrame: soğuk beyaz
+	self.Label:SetFont( fontLarge )
+	self.Label:SetTextColor( Color( 225, 238, 255, 235 ) )
 	self.Label:Dock( TOP )
 	self.Label:DockMargin( 16, 10, 16, 8 )
 	self.Label:SetContentAlignment( 5 )
 
 	self.ProgressLabel = self:Add( "DLabel" )
 	self.ProgressLabel:SetText( "" )
-	self.ProgressLabel:SetContentAlignment( 7 )
+	self.ProgressLabel:SetFont( fontSmall )
+	self.ProgressLabel:SetContentAlignment( 4 )
 	self.ProgressLabel:SetVisible( false )
-	self.ProgressLabel:SetTextColor( Color( 35, 135, 237, 180 ) )  -- mavi ton
+	self.ProgressLabel:SetTextColor( Color( 210, 225, 248, 190 ) )
 
 	self.TotalsLabel = self:Add( "DLabel" )
 	self.TotalsLabel:SetText( "" )
-	self.TotalsLabel:SetContentAlignment( 7 )
+	self.TotalsLabel:SetFont( fontSmall )
+	self.TotalsLabel:SetContentAlignment( 4 )
 	self.TotalsLabel:SetVisible( false )
-	self.TotalsLabel:SetTextColor( Color( 35, 135, 237, 120 ) )    -- daha soluk mavi
+	self.TotalsLabel:SetTextColor( Color( 210, 225, 248, 130 ) )
 
 	self.Progress = 0
 	self.TotalProgress = 0
+	self.ShownProgress = 0
+	self.ShownTotal = 0
 
 	self:SetDrawProgress( false )
+
+	self:SetAlpha( 0 )
+	self:AlphaTo( 255, 0.25, 0 )
 
 end
 
@@ -59,11 +216,11 @@ function PANEL:PerformLayout( wide )
 	self:Center()
 	self:AlignBottom( 16 )
 
-	self.ProgressLabel:SetSize( 100, 20 )
+	self.ProgressLabel:SetSize( 100, 16 )
 	self.ProgressLabel:SetPos( wide - 100, 40 )
 
-	self.TotalsLabel:SetSize( 100, 20 )
-	self.TotalsLabel:SetPos( wide - 100, 60 )
+	self.TotalsLabel:SetSize( 100, 16 )
+	self.TotalsLabel:SetPos( wide - 100, 58 )
 
 end
 
@@ -103,10 +260,6 @@ end
 function PANEL:FinishedDownloading( id )
 
 	self.Progress = -1
-	--self:SetDrawProgress( false )
-	--self.ProgressLabel:Hide()
-	--self.TotalsLabel:Hide()
-	--self.Rocket:Blast()
 
 end
 
@@ -118,61 +271,30 @@ function PANEL:SetMessage( msg )
 
 end
 
--- NightFrame theme colors
-local boxColor              = Color( 10,  13,  22, 228 )   -- koyu lacivert arka plan
-local boxBorderColor        = Color( 35, 135, 237,  38 )   -- mavi border, %15 opak
-local progressBGColor       = Color(  0,   0,   0, 110 )   -- progress track arka planı
-local progressFillColor     = Color( 35, 135, 237, 220 )   -- mavi dolgu (#2387ed)
-local progressTotalBGColor  = Color(  0,   0,   0,  80 )
-local progressTotalFillColor= Color( 35, 135, 237, 120 )   -- toplam progress, yarı şeffaf mavi
-
 function PANEL:Paint( wide, tall )
 
-	-- Dış border (ince mavi çizgi)
-	DisableClipping( true )
-		draw.RoundedBox( 5, -1, -1, wide + 2, tall + 2, boxBorderColor )
-	DisableClipping( false )
+	draw.RoundedBox( cornerRadius, 0, 0, wide, tall, self.BoxColor )
+	RoundedOutline( 0, 0, wide, tall, self.BorderColor )
 
-	-- Ana arka plan
-	draw.RoundedBox( 4, 0, 0, wide, tall, boxColor )
+	if ( !self:GetDrawProgress() ) then return end
 
-	-- Cog (spinner) — daha az belirgin
-	surface.SetDrawColor( 35, 135, 237, 18 )
-	surface.SetMaterial( matProgressCog )
-	surface.DrawTexturedRectRotated( 0, 32, 256, 256, SysTime() * -20 )
+	local x = 112
+	local w = wide - 228
+	local step = math.min( FrameTime() * 10, 1 )
 
-	if ( self:GetDrawProgress() ) then
+	if ( self.TotalProgress < self.ShownTotal ) then self.ShownTotal = self.TotalProgress end
+	self.ShownTotal = Lerp( step, self.ShownTotal, self.TotalProgress )
+	Pill( x, 64, w, 4, self.ShownTotal, self.TrackColor, self.TotalFillColor )
 
-		-- Overall progress
-		local w = wide - 228
-		local x = 80
+	local currentProgress = self.Progress
 
-		draw.RoundedBox( 3, x + 32, 62, w, 10, progressTotalBGColor )
-		draw.RoundedBox( 3, x + 33, 63, w * math.Clamp( self.TotalProgress, 0.05, 1 ) - 2, 8, progressTotalFillColor )
-
-		-- Current file progress
-		local currentProgress = self.Progress
-
-		if ( currentProgress >= 0 ) then
-			draw.RoundedBox( 3, x + 32, 40, w, 15, progressBGColor )
-			draw.RoundedBox( 3, x + 33, 41, w * math.Clamp( currentProgress, 0.05, 1 ) - 2, 13, progressFillColor )
-		end
-
+	if ( currentProgress >= 0 ) then
+		if ( currentProgress < self.ShownProgress ) then self.ShownProgress = currentProgress end
+		self.ShownProgress = Lerp( step, self.ShownProgress, currentProgress )
+		Pill( x, 44, w, 8, self.ShownProgress, self.TrackColor, self.FillColor )
+	else
+		Pill( x, 44, w, 8, 1, self.TrackColor, self.FillColor )
 	end
-
-	-- Workshop LOGO
-	DisableClipping( true )
-
-		local x = -8
-
-		surface.SetDrawColor( 255, 255, 255, 255 )
-		surface.SetMaterial( matHeader )
-		surface.DrawTexturedRect( x, -22, 128, 32 )
-
-		surface.SetDrawColor( 255, 255, 255, math.random( 0, 255 ) )
-		surface.DrawTexturedRect( x, -22, 128, 32 )
-
-	DisableClipping( false )
 
 end
 

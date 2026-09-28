@@ -5,7 +5,7 @@ title Vanilla UI Overhaul
 :menu
 cls
 echo.
-echo  Vanilla UI+ Beta v1.3
+echo  Vanilla UI+ v1.4
 echo  github.com/qudeowl/vanilla-ui-overhaul
 echo.
 echo   1. Install
@@ -37,7 +37,7 @@ set "action=update"
 goto variant
 
 :variant
-set "archive=Vanilla_UI_Overhaul_v1.3_Beta.zip"
+set "archive=Vanilla_UI_Overhaul_v1.4.zip"
 set "mode="
 cls
 echo.
@@ -88,7 +88,7 @@ echo  Found Garry's Mod at: !gmod!
 echo  Downloading...
 set "tmp=%TEMP%\vuo_%RANDOM%"
 mkdir "!tmp!" 2>nul
-set "url=https://github.com/qudeowl/vanilla-ui-overhaul/releases/download/vuo_v1.3_beta/!archive!"
+set "url=https://github.com/qudeowl/vanilla-ui-overhaul/releases/download/vuo_v1.4/!archive!"
 curl -L --ssl-no-revoke -o "!tmp!\!archive!" "!url!"
 if not exist "!tmp!\!archive!" powershell -Command "[Net.ServicePointManager]::SecurityProtocol='Tls12';(New-Object Net.WebClient).DownloadFile('!url!','!tmp!\!archive!')"
 if not exist "!tmp!\!archive!" (
@@ -105,7 +105,7 @@ if "%action%"=="update" (
 
 echo  Installing...
 powershell -Command "Expand-Archive -Path '!tmp!\!archive!' -DestinationPath '!tmp!\out' -Force"
-powershell -NoProfile -Command "$d=Get-ChildItem '!tmp!\out' -Directory | Select-Object -First 1; if($d){$g=Join-Path $d.FullName 'garrysmod'; $src=if(Test-Path $g){$g}else{$d.FullName}; if('!mode!' -eq 'addon'){$dest=Join-Path '!gmod!' 'addons\garrysmod'; New-Item -ItemType Directory -Force -Path $dest | Out-Null; Copy-Item (Join-Path $src '*') $dest -Recurse -Force}else{Copy-Item (Join-Path $src '*') '!gmod!' -Recurse -Force}}"
+powershell -NoProfile -Command "$d=Get-ChildItem '!tmp!\out' -Directory | Select-Object -First 1; if($d){$g=Join-Path $d.FullName 'garrysmod'; $src=if(Test-Path $g){$g}else{$d.FullName}; if('!mode!' -eq 'addon'){$dest=Join-Path '!gmod!' 'addons\garrysmod'; New-Item -ItemType Directory -Force -Path $dest | Out-Null; Get-ChildItem $src | Where-Object {'addons','workshop' -notcontains $_.Name} | Copy-Item -Destination $dest -Recurse -Force; foreach($x in 'addons','workshop'){$p=Join-Path $src $x; if(Test-Path $p){$t=Join-Path '!gmod!' $x; New-Item -ItemType Directory -Force -Path $t | Out-Null; Copy-Item (Join-Path $p '*') $t -Recurse -Force}}}else{Copy-Item (Join-Path $src '*') '!gmod!' -Recurse -Force}}"
 rd /s /q "!tmp!" 2>nul
 
 cls
@@ -222,14 +222,29 @@ for %%F in (
     "resource\fonts\Roboto-Medium.ttf"
     "resource\fonts\Roboto-SemiBold.ttf"
     "resource\fonts\tgnormal.ttf"
+    "resource\fonts\vuo_barlow.ttf"
+    "resource\fonts\vuo_quicksand.ttf"
     "lua\menu\loading.lua"
     "lua\menu\errors.lua"
     "lua\menu\mount\vgui\workshop.lua"
     "lua\menu\problems\problems_pnl.lua"
     "lua\autorun\client\spawnmenu_theme.lua"
+    "workshop\materials\console\background01.vtf"
+    "workshop\materials\console\background01_widescreen.vtf"
+    "workshop\materials\console\startup_loading.vtf"
 ) do if exist "!gmod!\%%~F" (del /f /q "!gmod!\%%~F" & echo   Removed %%~F)
 
-if exist "!gmod!\addons\garrysmod" (rd /s /q "!gmod!\addons\garrysmod" & echo   Removed addons\garrysmod)
+for %%D in ("workshop\materials\console" "workshop\materials" "workshop") do rd "!gmod!\%%~D" 2>nul
+
+if exist "!gmod!\addons\Vanilla_UI_StartupScreen" (rd /s /q "!gmod!\addons\Vanilla_UI_StartupScreen" & echo   Removed addons\Vanilla_UI_StartupScreen)
+
+if exist "!gmod!\addons\garrysmod" (
+    if "%~1"=="keepdata" (
+        for /d %%D in ("!gmod!\addons\garrysmod\*") do if /i not "%%~nxD"=="materials" if /i not "%%~nxD"=="sound" rd /s /q "%%~D"
+        del /f /q "!gmod!\addons\garrysmod\*" 2>nul
+    ) else rd /s /q "!gmod!\addons\garrysmod"
+    echo   Removed addons\garrysmod
+)
 
 if "%~1"=="keepdata" exit /b
 

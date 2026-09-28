@@ -1,43 +1,66 @@
-
 include( "problem_lua.lua" )
 include( "problem_generic.lua" )
 include( "permissions.lua" )
 
--- =========================================================
---  Theme colors — matched to Custom.css v2 palette
--- =========================================================
 local THEME = {
-    -- Main frame background
-    frameBg      = Color( 12,  16,  28,  210 ),
-    -- Content area background
-    contentBg    = Color( 10,  14,  24,  130 ),
-    -- Tab bar background
-    tabBarBg     = Color( 8,   10,  18,  120 ),
-    -- Frame border
-    frameBorder  = Color( 255, 255, 255, 18  ),
-    -- Active tab tint
-    tabActive    = Color( 35,  135, 237, 30  ),
-    -- Inactive tab — fully transparent
+
+    frameBg      = Color( 10,  10,  14,  220 ),
+
+    contentBg    = Color( 8,   8,   12,  160 ),
+
+    tabBarBg     = Color( 8,   8,   12,  140 ),
+
+    frameBorder  = Color( 255, 255, 255, 30  ),
+
+    tabActive    = Color( 35,  135, 237, 35  ),
+
     tabInactive  = Color( 0,   0,   0,   0   ),
-    -- Tab hover
-    tabHover     = Color( 255, 255, 255, 12  ),
-    -- Accent line under active tab
-    accent       = Color( 35,  135, 237, 200 ),
-    -- Text color
-    text         = Color( 200, 218, 245, 255 ),
-    -- Separator line
-    separator    = Color( 255, 255, 255, 12  ),
-    -- Close button hover
-    closeHover   = Color( 180, 40,  40,  160 ),
-    -- Title bar background
-    titleBg      = Color( 35,  135, 237, 20  ),
+
+    tabHover     = Color( 255, 255, 255, 15  ),
+
+    accent       = Color( 35,  135, 237, 220 ),
+
+    text         = Color( 210, 225, 248, 255 ),
+
+    separator    = Color( 255, 255, 255, 15  ),
+
+    closeHover   = Color( 180, 40,  40,  180 ),
+
+    titleBg      = Color( 35,  135, 237, 25  ),
 }
 
--- Blur: render.UpdateScreenEffectTexture is only available in game context.
--- Silently skip in menu context (pcall + nil guard).
+local function nfReadAccents()
+    local blue  = { 35, 135, 237 }
+    local green = { 60, 200, 140 }
+    local function parse( str, fallback )
+        if ( !isstring( str ) ) then return fallback end
+        local r, g, b = string.match( str, "(%d+)%s*,%s*(%d+)%s*,%s*(%d+)" )
+        if ( r and g and b ) then return { tonumber( r ), tonumber( g ), tonumber( b ) } end
+        return fallback
+    end
+    local raw = file.Read( "vuo_settings.txt", "DATA" )
+    if ( raw ) then
+        local cfg = util.JSONToTable( raw )
+        if ( cfg ) then
+            blue  = parse( cfg.accentBlue,  blue )
+            green = parse( cfg.accentGreen, green )
+        end
+    end
+    return blue, green
+end
+
+local function nfCustomSounds()
+    local raw = file.Read( "vuo_settings.txt", "DATA" )
+    if ( raw ) then
+        local cfg = util.JSONToTable( raw )
+        if ( cfg and cfg.customSounds ~= nil ) then return cfg.customSounds and true or false end
+    end
+    return true
+end
+
 local blurMat = Material( "pp/blurscreen" )
 local function DrawBlur( panel, amount )
-    -- render.UpdateScreenEffectTexture may be nil in menu context
+
     if ( !render.UpdateScreenEffectTexture ) then return end
     if ( !render.SupportsPixelShaders_2_0() ) then return end
     local ok = pcall( function()
@@ -51,15 +74,43 @@ local function DrawBlur( panel, amount )
             surface.DrawTexturedRect( -x, -y, ScrW(), ScrH() )
         end
     end )
-    -- ok == false: silently skip; background color remains visible
+
+end
+
+local function nfDrawCircle( cx, cy, radius, col )
+    local segs = 32
+    local poly = {}
+    for i = 0, segs do
+        local a = math.rad( ( i / segs ) * 360 )
+        poly[ i + 1 ] = { x = cx + math.cos( a ) * radius, y = cy + math.sin( a ) * radius }
+    end
+    surface.SetDrawColor( col.r, col.g, col.b, col.a )
+    draw.NoTexture()
+    surface.DrawPoly( poly )
 end
 
 local PANEL = {}
 
 function PANEL:Init()
 
+    local accBlue, accGreen = nfReadAccents()
+    local function PRIMARY( a )   return Color( accBlue[1],  accBlue[2],  accBlue[3],  a ) end
+    local function SECONDARY( a ) return Color( accGreen[1], accGreen[2], accGreen[3], a ) end
+    THEME.tabActive = PRIMARY( 35 )
+    THEME.accent    = PRIMARY( 220 )
+    THEME.titleBg   = PRIMARY( 25 )
+
+    local sndOn = nfCustomSounds()
+    local function nfPlay( f ) if ( sndOn ) then surface.PlaySound( f ) end end
+    self._nfPlay = nfPlay
+    self._openedAt = SysTime()
+
     self:SetSize( ScrW(), ScrH() )
     self:MakePopup()
+
+    self:SetAlpha( 0 )
+    self:AlphaTo( 255, 0.28, 0 )
+    nfPlay( "vuo_sounds/menu_accept.wav" )
 
     self.ErrorPanels  = {}
     self.ProblemPanels = {}
@@ -71,7 +122,18 @@ function PANEL:Init()
     local panelH = ( ScrH() - 55 ) - ( margin * 2 )
 
     ProblemsFrame:SetSize( panelW, panelH )
-    ProblemsFrame:SetPos( ScrW() - panelW - margin, margin )
+    local px, py = ScrW() - panelW - margin, margin
+    if ( istable( VUO_ProblemsBtn ) and #VUO_ProblemsBtn == 4 ) then
+        local bl, bt, brr, bb = VUO_ProblemsBtn[1], VUO_ProblemsBtn[2], VUO_ProblemsBtn[3], VUO_ProblemsBtn[4]
+        local gap = 6
+        px = brr - panelW
+        if ( px < gap ) then px = bl end
+        px = math.Clamp( px, gap, ScrW() - panelW - gap )
+        py = bb + gap
+        if ( py + panelH > ScrH() - gap ) then py = bt - panelH - gap end
+        py = math.Clamp( py, gap, ScrH() - panelH - gap )
+    end
+    ProblemsFrame:SetPos( px, py )
     ProblemsFrame.OnRemove = function() self:Remove() end
 
     ProblemsFrame.Paint = function( frm, w, h )
@@ -79,14 +141,13 @@ function PANEL:Init()
         draw.RoundedBox( 6, 0, 0, w, h, THEME.frameBg )
         surface.SetDrawColor( THEME.frameBorder.r, THEME.frameBorder.g, THEME.frameBorder.b, THEME.frameBorder.a )
         surface.DrawOutlinedRect( 0, 0, w, h, 1 )
-        -- Title bar separator
+
         surface.SetDrawColor( THEME.separator.r, THEME.separator.g, THEME.separator.b, THEME.separator.a )
         surface.DrawRect( 0, 26, w, 1 )
-        -- Title text
+
         draw.SimpleText( "Problems", "DermaDefault", 10, 8, Color(180, 185, 195, 140), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP )
     end
 
-    -- Single clean close button
     local CloseBtn = ProblemsFrame:Add( "DButton" )
     CloseBtn:SetSize( 22, 18 )
     CloseBtn:SetPos( panelW - 26, 4 )
@@ -101,25 +162,27 @@ function PANEL:Init()
             s:SetTextColor( Color( 180, 185, 195, 160 ) )
         end
     end
-    CloseBtn.DoClick = function() self:Remove() end
+    CloseBtn.OnCursorEntered = function() nfPlay( "vuo_sounds/menu_focus.wav" ) end
+    CloseBtn.DoClick = function() self:FadeRemove() end
 
-    ProblemsFrame:DockPadding( 8, 32, 8, 8 )
+    ProblemsFrame:DockPadding( 8, 34, 8, 8 )
 
     local sheet = vgui.Create( "DPropertySheet", ProblemsFrame )
     sheet:Dock( FILL )
     self.Tabs = sheet
 
-    -- Tab bar — minimal, sadece içerik alanı hafif karartılmış
     sheet.Paint = function( s, w, h )
-        -- Content area only (below tab bar)
-        draw.RoundedBoxEx( 4, 0, 20, w, h - 20, THEME.contentBg, false, false, true, true )
-        -- Thin separator below tab bar
+        draw.RoundedBoxEx( 4, 0, 22, w, h - 22, THEME.contentBg, false, false, true, true )
         surface.SetDrawColor( THEME.separator.r, THEME.separator.g, THEME.separator.b, THEME.separator.a )
-        surface.DrawRect( 0, 20, w, 1 )
+        surface.DrawRect( 0, 22, w, 1 )
     end
 
-    -- Lua Errors tab
-    local luaErrorContainer = vgui.Create( "Panel", ProblemsFrame )
+    local luaErrorWrapper = vgui.Create( "DPanel", ProblemsFrame )
+    luaErrorWrapper.Paint = function() end
+    luaErrorWrapper:DockPadding( 0, 10, 0, 0 )
+
+    local luaErrorContainer = luaErrorWrapper:Add( "Panel" )
+    luaErrorContainer:Dock( FILL )
     luaErrorContainer.Paint = function() end
 
     local luaErrorList = luaErrorContainer:Add( "DScrollPanel" )
@@ -131,24 +194,42 @@ function PANEL:Init()
     luaStrictMode:SetConVar( "lua_strict" )
     luaStrictMode:SetDark( false )
     luaStrictMode:SetTextColor( THEME.text )
-    -- Find DCheckBox inside DCheckBoxLabel and override its Paint
+    luaStrictMode:SetTall( 22 )
+    luaStrictMode.Paint = function() end
+    luaStrictMode.OnChange = function( s, val )
+        if ( !s._nfSndReady ) then return end
+        nfPlay( val and "vuo_sounds/menu_accept.wav" or "vuo_sounds/menu_back.wav" )
+    end
+    timer.Simple( 0.2, function() if ( IsValid( luaStrictMode ) ) then luaStrictMode._nfSndReady = true end end )
+
+    luaStrictMode.PerformLayout = function( s, w, h )
+        local children = s:GetChildren()
+        for _, child in ipairs( children ) do
+            if child.ClassName == "DCheckBox" then
+                local cbSize = 14
+                child:SetSize( cbSize, cbSize )
+                child:SetPos( 2, math.floor((h - cbSize) / 2) )
+            elseif child.ClassName == "DLabel" then
+                child:SetPos( 20, 0 )
+                child:SetSize( w - 20, h )
+            end
+        end
+    end
+
     local function styleCheckbox( lbl )
         if not IsValid( lbl ) then return end
         for _, child in ipairs( lbl:GetChildren() ) do
             if child.ClassName == "DCheckBox" then
                 child.Paint = function( s, w, h )
-                    -- CheckButton.BgColor = Theme_ContentBG
-                    draw.RoundedBox( 2, 0, 0, w, h, Color( 20, 28, 48, 170 ) )
-                    -- CheckButton.Border1/2 = 35 135 237 80
-                    surface.SetDrawColor( 35, 135, 237, 80 )
-                    surface.DrawOutlinedRect( 0, 0, w, h, 1 )
-                    if s:GetChecked() then
-                        -- CheckButton.Check = Theme_Blue
-                        surface.SetDrawColor( 35, 135, 237, 255 )
-                        surface.DrawRect( 3, 3, w - 6, h - 6 )
-                        -- İç parlak vurgu
-                        surface.SetDrawColor( 100, 180, 255, 120 )
-                        surface.DrawRect( 4, 4, w - 8, math.floor((h-8)/2) )
+
+                    local checked = s:GetChecked()
+                    local cx, cy = w * 0.5, h * 0.5
+                    local R = math.min( w, h ) * 0.5
+                    if checked then
+                        nfDrawCircle( cx, cy, R, PRIMARY( 255 ) )
+                    else
+                        nfDrawCircle( cx, cy, R,     Color( 255, 255, 255, 102 ) )
+                        nfDrawCircle( cx, cy, R - 1, Color( 14,  14,  18,  255 ) )
                     end
                 end
                 return
@@ -158,51 +239,71 @@ function PANEL:Init()
     timer.Simple( 0,   function() styleCheckbox( luaStrictMode ) end )
     timer.Simple( 0.1, function() styleCheckbox( luaStrictMode ) end )
 
-    sheet:AddSheet( "#problems.lua_errors", luaErrorContainer, "icon16/error.png" )
+    sheet:AddSheet( "#problems.lua_errors", luaErrorWrapper, "icon16/error.png" )
     self.LuaErrorList = luaErrorList
 
-    -- Problems tab
-    local problemsList = ProblemsFrame:Add( "DScrollPanel" )
-    sheet:AddSheet( "#problems.problems", problemsList, "icon16/tick.png" )
+    local problemsWrapper = vgui.Create( "DPanel", ProblemsFrame )
+    problemsWrapper.Paint = function() end
+    problemsWrapper:DockPadding( 0, 10, 0, 0 )
+    local problemsList = problemsWrapper:Add( "DScrollPanel" )
+    problemsList:Dock( FILL )
+    sheet:AddSheet( "#problems.problems", problemsWrapper, "icon16/tick.png" )
     self.ProblemsList = problemsList
 
-    -- Permissions tab
-    local permissionList = ProblemsFrame:Add( "PermissionViewer" )
+    local permWrapper = vgui.Create( "DPanel", ProblemsFrame )
+    permWrapper.Paint = function() end
+    permWrapper:DockPadding( 0, 10, 0, 0 )
+    local permissionList = permWrapper:Add( "PermissionViewer" )
+    permissionList:Dock( FILL )
     permissionList.ParentFrame = self
-    sheet:AddSheet( "#permissions.title", permissionList, "icon16/lock.png" )
+    sheet:AddSheet( "#permissions.title", permWrapper, "icon16/lock.png" )
 
-    -- Tab button styles
     for _, item in pairs( sheet:GetItems() ) do
         local tab = item.Tab
-        tab:SetHeight( 20 )
+        tab:SetHeight( 22 )
+
+        tab.OnCursorEntered = function() nfPlay( "vuo_sounds/menu_focus.wav" ) end
+        local _nfOldDo = tab.DoClick
+        tab.DoClick = function( s ) nfPlay( "vuo_sounds/menu_accept.wav" ) if ( _nfOldDo ) then _nfOldDo( s ) end end
+
         tab.Paint = function( s, w, h )
             local isActive  = s:GetPropertySheet():GetActiveTab() == s
             local isHovered = s:IsHovered()
+
             if isActive then
-                -- Only bottom accent line — no box
-                surface.SetDrawColor( THEME.accent.r, THEME.accent.g, THEME.accent.b, THEME.accent.a )
-                surface.DrawRect( 4, h - 2, w - 8, 2 )
-                -- Subtle background tint
-                draw.RoundedBoxEx( 3, 1, 1, w - 2, h - 2, THEME.tabActive, true, true, false, false )
+                surface.SetDrawColor( SECONDARY( 235 ) )
+                surface.DrawRect( 6, h - 2, w - 12, 2 )
             elseif isHovered then
-                draw.RoundedBoxEx( 3, 1, 1, w - 2, h - 2, THEME.tabHover, true, true, false, false )
+                surface.SetDrawColor( THEME.accent.r, THEME.accent.g, THEME.accent.b, 200 )
+                surface.DrawRect( 6, h - 2, w - 12, 2 )
             end
-            -- Inactive: draw nothing, fully transparent
-        end
-        if tab.SetTextColor then
-            tab:SetTextColor( THEME.text )
+            if tab.SetTextColor then
+                tab:SetTextColor( isActive and SECONDARY( 255 ) or THEME.text )
+            end
         end
     end
 
 end
 
+function PANEL:FadeRemove()
+    if ( self._nfClosing ) then return end
+    self._nfClosing = true
+    if ( self._nfPlay ) then self._nfPlay( "vuo_sounds/menu_back.wav" ) end
+    self:AlphaTo( 0, 0.50, 0, function()
+        if ( IsValid( self ) ) then self:Remove() end
+    end )
+end
+
 function PANEL:OnMousePressed( mcode )
-    if ( mcode == MOUSE_LEFT ) then self:Remove() end
+    if ( mcode == MOUSE_LEFT ) then
+        if ( SysTime() - ( self._openedAt or 0 ) < 0.25 ) then return end
+        self:FadeRemove()
+    end
 end
 
 function PANEL:Think()
     if ( input.IsKeyDown( KEY_ESCAPE ) and !IsInGame() ) then
-        self:Remove()
+        self:FadeRemove()
     end
 end
 

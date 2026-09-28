@@ -1,4 +1,3 @@
-
 	<div class="page" ng-controller="ControllerMain">
 
 		<div class="options">
@@ -7,26 +6,26 @@
 
 				<li><img ng-src='../gamemodes/{{Gamemode}}/logo.png' /></li>
 				<li>&nbsp;</li>
-				<li ng-show="InGame"><a ng-click="BackToGame()" ng-Tranny="'resume_game'"></a></li>
+				<li ng-show="InGame"><a ng-click="BackToGame()" ng-localize="'resume_game'" ng-Tranny="'resume_game'"></a></li>
 				<li ng-show="InGame">&nbsp;</li>
-				<li><a ng-href="#/newgame/" ng-Tranny="'new_game'"></a></li>
+				<li><a ng-href="#/newgame/" ng-localize="'new_game'" ng-Tranny="'new_game'"></a></li>
 
-				<li><a ng-href="#/servers/" ng-Tranny="'find_mp_game'"></a></li>
-
-				<li>&nbsp;</li>
-				<li><a ng-href="#/addons/" ng-Tranny="'addons'"></a></li>
-				<li><a ng-href="#/dupes/" ng-Tranny="'dupes'"></a></li>
-				<li><a ng-href="#/saves/" ng-Tranny="'saves'"></a></li>
-				<li><a ng-href="#/demos/" ng-Tranny="'demos'"></a></li>
+				<li><a ng-href="#/servers/" ng-localize="'find_mp_game'" ng-Tranny="'find_mp_game'"></a></li>
 
 				<li>&nbsp;</li>
-				<li><a ng-click="MenuOption( this, 'OpenOptionsDialog')" ng-Tranny="'options'"></a></li>
+				<li><a ng-href="#/addons/" ng-localize="'addons'" ng-Tranny="'addons'"></a></li>
+				<li><a ng-href="#/dupes/" ng-localize="'dupes'" ng-Tranny="'dupes'"></a></li>
+				<li><a ng-href="#/saves/" ng-localize="'saves'" ng-Tranny="'saves'"></a></li>
+				<li><a ng-href="#/demos/" ng-localize="'demos'" ng-Tranny="'demos'"></a></li>
+
+				<li>&nbsp;</li>
+				<li><a ng-click="MenuOption( this, 'OpenOptionsDialog')" ng-localize="'options'" ng-Tranny="'options'"></a></li>
 
 				<li>&nbsp;</li>
 				<li ng-show="InGame">
-					<a ng-click="MenuOption( this, 'Disconnect');" ng-Tranny="'disconnect'"></a>
+					<a ng-click="MenuOption( this, 'Disconnect');" ng-localize="'disconnect'" ng-Tranny="'disconnect'"></a>
 				</li>
-				<li><a ng-click="MenuOption( this, 'Quit')" ng-Tranny="'quit'"></a></li>
+				<li><a ng-click="MenuOption( this, 'Quit')" ng-localize="'quit'" ng-Tranny="'quit'"></a></li>
 
 			</ul>
 
@@ -40,7 +39,7 @@
 				</div>
 			</div>
 			<div class='news_buttons' ng-hide="HideNews">
-				<div class="{{IfElse( NewsItem.Url == CurrentNewsItem.Url, 'selected', '' )}} {{NewsItemClass( NewsItem )}}" ng-repeat="NewsItem in NewsList | orderBy: 'Date'" ng-click="SelectItem(NewsItem)"></div>
+				<div class="{{IfElse( NewsItem.Url == CurrentNewsItem.Url, 'selected', '' )}} {{NewsItemClass( NewsItem )}}" ng-repeat="NewsItem in NewsList | orderBy: '-Date'" ng-click="SelectItem(NewsItem)"></div>
 			</div>
 		</div>
 

@@ -1,4 +1,4 @@
-"Resource/LoadingDialog.res"
+"Resource/LoadingDialogNoBannerSingle.res"
 {
 	"LoadingDialog"
 	{

@@ -1,18 +1,6 @@
-///////////////////////////////////////////////////////////
-// Tracker scheme resource file
-//
-// sections:
-//		Colors			- all the colors used by the scheme
-//		BaseSettings	- contains settings for app to use to draw controls
-//		Fonts			- list of all the fonts used by app
-//		Borders			- description of all the borders
-//
-///////////////////////////////////////////////////////////
 Scheme
 {
-	//////////////////////// COLORS ///////////////////////////
-	// color details
-	// this is a list of all the colors used by the scheme
+
 	Colors
 	{
 		"White"					"255 255 255 255"
@@ -31,41 +19,38 @@ Scheme
 		"BGOpaque"				"26 26 26 250"
 		"BGTransparent"			"26 26 26 0"
 		"WhiteTransparent"		"255 255 255 0"
-		
-		// ── Tema: Custom.css ile birebir eşleştirildi ──────────
-		// Ana arka plan  rgba(15, 20, 35, 0.82)  → alpha ≈ 195
-		"Theme_WindowBG"        "15 20 35 195"
-		// İçerik arka planı (liste/panel iç) rgba(20,28,48)
-		"Theme_ContentBG"       "20 28 48 170"
-		// Metin arka planı (RichText, TextEntry)
-		"Theme_TextBG"          "8 12 26 175"
-		// Ana metin rengi #e0ecff
+
+		"Theme_WindowBG"        "8 10 18 215"
+
+		"Theme_ContentBG"       "14 16 24 165"
+
+		"Theme_TextBG"          "6 8 14 200"
+
 		"Theme_Text"            "224 236 255 255"
-		// Buton normal: rgba(20,28,50,0.55)
-		"Theme_Button"          "20 28 50 140"
-		// Buton hover: rgba(35,135,237,0.3)
+
+		"Theme_Button"          "10 12 20 175"
+
 		"Theme_ButtonHover"     "35 135 237 76"
-		// Border: rgba(255,255,255,0.1)
+
 		"Theme_Border"          "255 255 255 25"
-		// GMod mavi: #2387ed  (35,135,237)
+
 		"Theme_Blue"            "35 135 237 255"
-		// GMod mavi yarı saydam
+
 		"Theme_Blue_Light"      "35 135 237 110"
-		// Başlık barı arka planı: rgba(35,135,237,0.15)
-		"Theme_TitleBG"         "35 135 237 38"
+
+		"Theme_Green"           "60 200 140 255"
+		"Theme_Green_Dim"       "60 200 140 180"
+
+		"Theme_TitleBG"         "14 17 26 220"
 	}
 
-	///////////////////// BASE SETTINGS ////////////////////////
-	//
-	// default settings for all panels
-	// controls use these to determine their settings
 	BaseSettings
 	{
-		// vgui_controls color specifications
-		Border.Bright					"Theme_Blue"		// the lit side of a control
-		Border.Dark						"26 26 26 198"		// the dark/unlit side of a control
-		Border.Selection				"Theme_Blue_Light"	// the additional border color for displaying the default/selected button
-		Border.DarkSolid				"Theme_WindowBG"
+
+		Border.Bright					"Theme_Blue"
+		Border.Dark						"26 26 26 198"
+		Border.Selection				"Theme_Blue_Light"
+		Border.DarkSolid				"0 0 0 0"
 		Border.Subtle					"58 58 58 255"
 
 		Button.TextColor				"Theme_Text"
@@ -73,16 +58,17 @@ Scheme
 		Button.ArmedTextColor			"Theme_Blue"
 		Button.ArmedBgColor				"Theme_ButtonHover"
 		Button.DepressedTextColor		"White"
-		Button.DepressedBgColor			"Theme_Blue"
+		Button.DepressedBgColor			"Theme_Green_Dim"
+		Button.FocusBorderColor			"Theme_Green"
 		Button.FocusBorderColor			"Theme_Blue"
 
 		CheckButton.TextColor			"Theme_Text"
 		CheckButton.SelectedTextColor	"White"
 		CheckButton.BgColor				"Theme_ContentBG"
-		CheckButton.Border1				"35 135 237 80"
-		CheckButton.Border2				"35 135 237 80"
-		CheckButton.Check				"Theme_Blue"
-		CheckButton.DisabledFgColor		"58 58 58 255"
+		CheckButton.Border1				"255 255 255 160"
+		CheckButton.Border2				"255 255 255 160"
+		CheckButton.Check				"Theme_Green"
+		CheckButton.DisabledFgColor		"140 150 165 255"
 		CheckButton.HighlightFgColor	"Theme_Blue"
 		CheckButton.ArmedBgColor		"Blank"
 		CheckButton.DepressedBgColor	"Blank"
@@ -96,7 +82,7 @@ Scheme
 		Frame.TitleTextInsetX			16
 		Frame.ClientInsetX				8
 		Frame.ClientInsetY				6
-		Frame.BgColor					"Theme_WindowBG"
+		Frame.BgColor					"0 0 0 175"
 		Frame.OutOfFocusBgColor			"15 20 35 210"
 		Frame.FocusTransitionEffectTime	"0.3"
 		Frame.TransitionEffectTime		"0.3"
@@ -111,9 +97,10 @@ Scheme
 		FrameSystemButton.BgColor		"Blank"
 		FrameSystemButton.Icon			""
 		FrameSystemButton.DisabledIcon	""
-		FrameTitleBar.Font				"UiBold"
+		FrameTitleBar.Font				"UiBold"		[$WIN32]
+		FrameTitleBar.Font				"DefaultLarge"	[$WIN32]
 		FrameTitleBar.TextColor			"Theme_Blue"
-		FrameTitleBar.BgColor			"Theme_TitleBG"
+		FrameTitleBar.BgColor			"Blank"
 		FrameTitleBar.DisabledTextColor	"58 70 90 91"
 		FrameTitleBar.DisabledBgColor	"0 0 0 0"
 
@@ -125,14 +112,14 @@ Scheme
 		Label.TextBrightColor			"255 255 255 255"
 		Label.SelectedTextColor			"White"
 		Label.BgColor					"0 0 0 0"
-		Label.DisabledFgColor1			"80 100 130 200"
-		Label.DisabledFgColor2			"Theme_ContentBG"
+		Label.DisabledFgColor1			"140 150 165 255"
+		Label.DisabledFgColor2			"140 150 165 255"
 
 		ListPanel.TextColor					"Theme_Text"
 		ListPanel.TextBgColor				"Blank"
 		ListPanel.BgColor					"Theme_ContentBG"
 		ListPanel.SelectedTextColor			"White"
-		ListPanel.SelectedBgColor			"Theme_Blue_Light"
+		ListPanel.SelectedBgColor			"Theme_Green_Dim"
 		ListPanel.OutOfFocusSelectedTextColor	"Theme_Text"
 		ListPanel.SelectedOutOfFocusBgColor	"Theme_Blue"
 		ListPanel.EmptyListInfoTextColor	"Theme_Text"
@@ -149,9 +136,9 @@ Scheme
 		ProgressBar.FgColor				"Theme_Blue"
 		ProgressBar.BgColor				"0 0 0 128"
 
-		PropertySheet.TextColor				"224 224 224 200"
-		PropertySheet.SelectedTextColor		"White"
-		PropertySheet.SelectedBgColor		"Theme_Blue_Light"
+		PropertySheet.TextColor				"180 192 210 255"
+		PropertySheet.SelectedTextColor		"Theme_Green"
+		PropertySheet.SelectedBgColor		"Theme_Green_Dim"
 		PropertySheet.TransitionEffectTime	"0.25"
 		PropertySheet.BgColor				"Theme_ContentBG"
 
@@ -159,21 +146,21 @@ Scheme
 		RadioButton.SelectedTextColor	"White"
 
 		RichText.TextColor				"Theme_Text"
-		RichText.BgColor				"0 0 0 128"
+		RichText.BgColor				"0 0 0 125"
 		RichText.SelectedTextColor		"White"
-		RichText.SelectedBgColor		"Theme_Blue_Light"
+		RichText.SelectedBgColor		"Theme_Green_Dim"
 
-		ScrollBar.Wide					15
+		ScrollBar.Wide					12
 
-		ScrollBarButton.FgColor				"Theme_Text"
-		ScrollBarButton.BgColor				"Theme_Button"
-		ScrollBarButton.ArmedFgColor		"Theme_Blue"
-		ScrollBarButton.ArmedBgColor		"Theme_Text"
-		ScrollBarButton.DepressedFgColor	"White"
-		ScrollBarButton.DepressedBgColor	"Theme_Blue"
+		ScrollBarButton.FgColor				"0 0 0 0"
+		ScrollBarButton.BgColor				"0 0 0 0"
+		ScrollBarButton.ArmedFgColor		"0 0 0 0"
+		ScrollBarButton.ArmedBgColor		"0 0 0 0"
+		ScrollBarButton.DepressedFgColor	"0 0 0 0"
+		ScrollBarButton.DepressedBgColor	"0 0 0 0"
 
-		ScrollBarSlider.FgColor				"35 135 237 150"
-		ScrollBarSlider.BgColor				"15 20 35 180"
+		ScrollBarSlider.FgColor				"35 135 237 190"
+		ScrollBarSlider.BgColor				"15 20 35 40"
 
 		SectionedListPanel.HeaderTextColor	"Theme_Blue"
 		SectionedListPanel.HeaderBgColor	"Blank"
@@ -189,17 +176,17 @@ Scheme
 		Slider.NobColor				"Theme_Blue"
 		Slider.TextColor			"Theme_Text"
 		Slider.TrackColor			"20 28 48 200"
-		Slider.DisabledTextColor1	"58 58 58 255"
-		Slider.DisabledTextColor2	"Theme_WindowBG"
+		Slider.DisabledTextColor1	"140 150 165 255"
+		Slider.DisabledTextColor2	"140 150 165 255"
 
 		TextEntry.TextColor			"Theme_Text"
-		TextEntry.BgColor			"Theme_TextBG"
+		TextEntry.BgColor			"26 30 40 255"
 		TextEntry.CursorColor		"Theme_Blue"
 		TextEntry.DisabledTextColor	"58 58 58 255"
 		TextEntry.DisabledBgColor	"Theme_ContentBG"
 		TextEntry.SelectedTextColor	"255 255 255 255"
-		TextEntry.SelectedBgColor	"Theme_Blue_Light"
-		TextEntry.OutOfFocusSelectedBgColor	"Theme_Blue"
+		TextEntry.SelectedBgColor	"Theme_Green_Dim"
+		TextEntry.OutOfFocusSelectedBgColor	"Theme_Green_Dim"
 		TextEntry.FocusEdgeColor	"Theme_Blue_Light"
 
 		ToggleButton.SelectedTextColor	"Theme_Blue_Light"
@@ -211,7 +198,6 @@ Scheme
 
 		WizardSubPanel.BgColor		"Blank"
 
-		// scheme-specific colors
 		MainMenu.TextColor			"Theme_Text"
 		MainMenu.ArmedTextColor		"Theme_Blue"
 		MainMenu.DepressedTextColor	"Theme_Blue"
@@ -237,24 +223,15 @@ Scheme
 		"QuickListBGSelected"		"Theme_Blue"
 	}
 
-	//////////////////////// BITMAP FONT FILES /////////////////////////////
-	//
-	// Bitmap Fonts are ****VERY*** expensive static memory resources so they are purposely sparse
 	BitmapFontFiles
 	{
-		// UI buttons, custom font, (256x64)
+
 		"Buttons"		"materials/vgui/fonts/buttons_32.vbf"
 	}
 
-	//////////////////////// FONTS /////////////////////////////
-	//
-	// describes all the fonts
 	Fonts
 	{
-		// fonts are used in order that they are listed
-		// fonts listed later in the order will only be used if they fulfill a range not already filled
-		// if a font fails to load then the subsequent fonts will replace
-		// fonts are used in order that they are listed
+
 		"DebugFixed"
 		{
 			"1"
@@ -265,7 +242,7 @@ Scheme
 				"antialias" "1"
 			}
 		}
-		// fonts are used in order that they are listed
+
 		"DebugFixedSmall"
 		{
 			"1"
@@ -450,10 +427,9 @@ Scheme
 				"tall"		"18"
 				"weight"	"1200"
 				"antialias" "1"
-				//"outline" "1"
+
 			}
 		}
-
 
 		"AchievementDescriptionFont"
 		{
@@ -497,13 +473,12 @@ Scheme
 			{
 				"name"		"Lucida Console" [$WINDOWS]
 				"name"		"Verdana" [!$WINDOWS]
-				"tall"		"12" [$WINDOWS]
-				"tall"		"14" [!$WINDOWS]
+				"tall"		"15" [$WINDOWS]
+				"tall"		"15" [!$WINDOWS]
 				"weight"	"500"
 			}
 		}
 
-		// this is the symbol font
 		"Marlett"
 		{
 			"1"
@@ -545,8 +520,6 @@ Scheme
 			}
 		}
 
-		// HUD numbers
-		// We use multiple fonts to 'pulse' them in the HUD, hence the need for many of near size
 		"HUDNumber"
 		{
 			"1"
@@ -612,12 +585,7 @@ Scheme
 				"tall"		"10"
 				"weight"	"0"
 			}
-//			"1"
-//			{
-//				"name"		"FixedSys"
-//				"tall"		"20"
-//				"weight"	"0"
-//			}
+
 		}
 
 		"DefaultFixedDropShadow"
@@ -633,12 +601,7 @@ Scheme
 				"weight"	"0"
 				"dropshadow" "1"
 			}
-//			"1"
-//			{
-//				"name"		"FixedSys"
-//				"tall"		"20"
-//				"weight"	"0"
-//			}
+
 		}
 
 		"CloseCaption_Normal"
@@ -782,7 +745,6 @@ Scheme
 			}
 		}
 
-
 		StatsPageText
 		{
 			"1"
@@ -822,7 +784,6 @@ Scheme
 			}
 		}
 
-
 		"ServerBrowserTitle"
 		{
 			"1"
@@ -844,7 +805,7 @@ Scheme
 				"name"		"Tahoma"
 				"tall"		"16"
 				"weight"	"0"
-				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
+				"range"		"0x0000 0x017F"
 				"yres"	"480 599"
 			}
 			"2"
@@ -852,7 +813,7 @@ Scheme
 				"name"		"Tahoma"
 				"tall"		"16"
 				"weight"	"0"
-				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
+				"range"		"0x0000 0x017F"
 				"yres"	"600 767"
 			}
 			"3"
@@ -860,7 +821,7 @@ Scheme
 				"name"		"Tahoma"
 				"tall"		"16"
 				"weight"	"0"
-				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
+				"range"		"0x0000 0x017F"
 				"yres"	"768 1023"
 				"antialias"	"1"
 			}
@@ -869,7 +830,7 @@ Scheme
 				"name"		"Tahoma"
 				"tall"		"19"
 				"weight"	"0"
-				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
+				"range"		"0x0000 0x017F"
 				"yres"	"1024 1199"
 				"antialias"	"1"
 			}
@@ -878,7 +839,7 @@ Scheme
 				"name"		"Tahoma"
 				"tall"		"19"
 				"weight"	"0"
-				"range"		"0x0000 0x017F" //	Basic Latin, Latin-1 Supplement, Latin Extended-A
+				"range"		"0x0000 0x017F"
 				"yres"	"1200 6000"
 				"antialias"	"1"
 			}
@@ -886,10 +847,6 @@ Scheme
 
 	}
 
-	//
-	//////////////////// BORDERS //////////////////////////////
-	//
-	// describes all the border types
 	Borders
 	{
 		BaseBorder		SubtleBorder
@@ -901,8 +858,6 @@ Scheme
 
 		FrameBorder
 		{
-			// rounded corners for frames
-			//"backgroundtype" "2"
 
 			Left
 			{
@@ -948,7 +903,7 @@ Scheme
 			{
 				"1"
 				{
-					"color" "Border.Subtle"
+					"color" "Border.DarkSolid"
 					"offset" "0 0"
 				}
 			}
@@ -957,7 +912,7 @@ Scheme
 			{
 				"1"
 				{
-					"color" "Border.Subtle"
+					"color" "Border.DarkSolid"
 					"offset" "0 0"
 				}
 			}
@@ -966,7 +921,7 @@ Scheme
 			{
 				"1"
 				{
-					"color" "Border.Subtle"
+					"color" "Border.DarkSolid"
 					"offset" "0 0"
 				}
 			}
@@ -975,7 +930,7 @@ Scheme
 			{
 				"1"
 				{
-					"color" "Border.Subtle"
+					"color" "Border.DarkSolid"
 					"offset" "0 0"
 				}
 			}
@@ -1203,7 +1158,6 @@ Scheme
 
 		}
 
-
 		ToolTipBorder
 		{
 			"inset" "0 0 1 0"
@@ -1244,7 +1198,6 @@ Scheme
 			}
 		}
 
-		// this is the border used for default buttons (the button that gets pressed when you hit enter)
 		ButtonKeyFocusBorder
 		{
 			"inset" "0 0 0 0"
@@ -1323,13 +1276,11 @@ Scheme
 		}
 	}
 
-	//////////////////////// CUSTOM FONT FILES /////////////////////////////
-	//
-	// specifies all the custom (non-system) font files that need to be loaded to service the above described fonts
 	CustomFontFiles
 	{
 		"1"		"resource/HALFLIFE2.ttf"
 		"2"		"resource/HL2EP2.ttf"
 		"3"		"resource/marlett.ttf"
+
 	}
 }
