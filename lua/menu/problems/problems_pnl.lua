@@ -22,8 +22,6 @@ local THEME = {
 
     text         = Color( 210, 225, 248, 255 ),
 
-    separator    = Color( 255, 255, 255, 15  ),
-
     closeHover   = Color( 180, 40,  40,  180 ),
 
     titleBg      = Color( 35,  135, 237, 25  ),
@@ -224,8 +222,6 @@ function PANEL:Init()
 
     sheet.Paint = function( s, w, h )
         draw.RoundedBoxEx( 4, 0, 22, w, h - 22, THEME.contentBg, false, false, true, true )
-        surface.SetDrawColor( THEME.separator.r, THEME.separator.g, THEME.separator.b, THEME.separator.a )
-        surface.DrawRect( 0, 22, w, 1 )
     end
 
     local luaErrorWrapper = vgui.Create( "DPanel", ProblemsFrame )
