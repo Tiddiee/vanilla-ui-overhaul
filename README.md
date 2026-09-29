@@ -51,3 +51,9 @@ A redesigned main menu. Choose your own fonts, backgrounds, music and layout.
 > Follow alternative steps only if you installed the mod using the alternative installation method.
 
 ---
+
+## Credits
+
+Inspired by [TuPiDAn](https://steamcommunity.com/sharedfiles/filedetails/?id=3599195211)'s Dark Main Menu, [Remedy](https://steamcommunity.com/id/voidcubes/myworkshopfiles/)'s Theme Engine and [Portal](https://store.steampowered.com/bundle/234/Portal_Bundle/).
+
+Made by Qude, with help from AI.
