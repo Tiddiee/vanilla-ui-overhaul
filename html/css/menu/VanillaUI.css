@@ -623,6 +623,17 @@ div.centermessage a.create {
     color: #fff !important;
 }
 div.centermessage a.create:hover { background: rgba(var(--vuo-blue-rgb), 0.90) !important; }
+div.centermessage hr {
+    border: none !important;
+    height: 1px !important;
+    margin: 10px 0 !important;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(var(--vuo-blue-rgb), 0.65) 30%,
+        rgba(var(--vuo-green-rgb), 0.55) 70%,
+        transparent 100%) !important;
+    box-shadow: 0 0 8px rgba(var(--vuo-blue-rgb), 0.30) !important;
+}
 
 .server_gamemodes button,
 .server_gamemodes_inner button,
@@ -1544,6 +1555,38 @@ DIV.page BUTTON:not(.btn-primary-disabled):active {
         0 0 12px rgba(var(--vuo-blue-rgb), 0.16),
         0 2px 8px rgba(0, 0, 0, 0.35) !important;
 }
+DIV.page BUTTON.btn-primary {
+    background-color: rgba(var(--vuo-blue-rgb), 0.30) !important;
+    border: 1px solid rgba(var(--vuo-blue-rgb), 0.65) !important;
+    box-shadow:
+        0 0 12px rgba(var(--vuo-blue-rgb), 0.18),
+        0 2px 8px rgba(0, 0, 0, 0.35) !important;
+}
+DIV.page BUTTON.btn-primary:hover {
+    background-color: rgba(var(--vuo-blue-rgb), 0.58) !important;
+    border-color: rgb(var(--vuo-blue-rgb)) !important;
+    box-shadow:
+        0 0 18px rgba(var(--vuo-blue-rgb), 0.55),
+        0 2px 10px rgba(0, 0, 0, 0.35) !important;
+    transform: translateY(-1px) !important;
+}
+DIV.page BUTTON.btn-primary:active {
+    background-color: rgba(var(--vuo-green-rgb), 0.50) !important;
+    border-color: rgb(var(--vuo-green-rgb)) !important;
+    box-shadow: 0 0 16px rgba(var(--vuo-green-rgb), 0.55) !important;
+    transform: translateY(0) !important;
+}
+DIV.page BUTTON.btn-primary-disabled,
+DIV.page BUTTON.btn-primary-disabled:hover,
+DIV.page BUTTON.btn-primary-disabled:active {
+    background-color: rgba(8, 10, 18, 0.52) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: rgba(200, 210, 225, 0.45) !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+    cursor: default !important;
+}
 SPAN.installgamemode {
     background-color: rgba(var(--vuo-blue-rgb), 0.65) !important;
     text-align: center !important;
@@ -1580,14 +1623,31 @@ workshopicon {
 
 workshopicon input[type="checkbox"].checkbox {
     position: absolute !important;
-    top: 2px !important;
-    right: 2px !important;
+    top: 4px !important;
+    right: 6px !important;
     left: auto !important;
     margin: 0 !important;
 }
 workshopicon:hover {
     border-color: rgba(var(--vuo-blue-rgb), 0.50) !important;
     box-shadow: 0 4px 16px rgba(var(--vuo-blue-rgb), 0.15) !important;
+}
+workshopicon name label { padding-left: 8px !important; }
+workshopicon.disabled preview img { -webkit-filter: grayscale(1) !important; filter: grayscale(1) !important; }
+body:not(.vuo-hover-vanilla) workshopicon {
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease !important;
+}
+body:not(.vuo-hover-vanilla) workshopicon preview img {
+    transition: transform 0.22s ease !important;
+}
+body:not(.vuo-hover-vanilla) workshopicon:hover {
+    transform: translateY(-3px) !important;
+    border-color: rgba(var(--vuo-blue-rgb), 0.55) !important;
+    box-shadow: 0 0 0 1px rgba(var(--vuo-blue-rgb), 0.55), 0 8px 18px rgba(0, 0, 0, 0.45), 0 0 14px rgba(var(--vuo-blue-rgb), 0.25) !important;
+    z-index: 2 !important;
+}
+body:not(.vuo-hover-vanilla) workshopicon:hover preview img {
+    transform: scale(1.05) !important;
 }
 workshopicon name {
     background-color: rgba(6, 8, 14, 0.70) !important;
@@ -2004,25 +2064,40 @@ body[ng-controller="CDupes"] .options UL LI button:hover {
 }
 
 controls control {
-    background-color: rgba(var(--vuo-green-rgb), 0.28) !important;
-    border: 1px solid rgba(var(--vuo-green-rgb), 0.55) !important;
-    border-radius: 3px !important;
+    background-color: rgba(8, 10, 18, 0.80) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-radius: 4px !important;
     box-shadow: none !important;
     -webkit-box-shadow: none !important;
     color: #ffffff !important;
     font-size: 11px !important;
+    transition: background-color 0.12s ease, border-color 0.12s ease !important;
 }
 controls control:hover {
-    background-color: rgba(var(--vuo-green-rgb), 0.75) !important;
-    border: 1px solid rgba(var(--vuo-green-rgb), 0.90) !important;
-    color: #002a16 !important;
+    background-color: rgba(var(--vuo-blue-rgb), 0.70) !important;
+    border: 1px solid rgb(var(--vuo-blue-rgb)) !important;
+    color: #ffffff !important;
+}
+controls control:active,
+controls control.disabled,
+controls control[ng-click="Favorite( file, false )"] {
+    background-color: rgba(var(--vuo-green-rgb), 0.78) !important;
+    border: 1px solid rgb(var(--vuo-green-rgb)) !important;
+    color: #ffffff !important;
 }
 controls control.disabled {
-    background-color: rgba(var(--vuo-green-rgb), 0.85) !important;
-    border: 1px solid rgba(var(--vuo-green-rgb), 1.0) !important;
-    color: #002a16 !important;
     opacity: 1 !important;
     pointer-events: none !important;
+}
+controls control[ng-click^="Unsubscribe"]:hover,
+controls control[ng-click^="DeleteLocal"]:hover {
+    background-color: rgba(180, 40, 40, 0.82) !important;
+    border: 1px solid rgb(215, 70, 70) !important;
+}
+controls control[ng-click^="Unsubscribe"]:active,
+controls control[ng-click^="DeleteLocal"]:active {
+    background-color: rgba(140, 30, 30, 0.92) !important;
+    border: 1px solid rgb(215, 70, 70) !important;
 }
 controls control img {
     filter: brightness(0) invert(1) !important;
@@ -2030,9 +2105,10 @@ controls control img {
     transition: opacity 0.1s !important;
 }
 controls control:hover img,
-controls control.disabled img {
+controls control:active img,
+controls control.disabled img,
+controls control[ng-click="Favorite( file, false )"] img {
     opacity: 1 !important;
-    filter: brightness(0) !important;
 }
 
 #vuo_music_panel {
@@ -2547,7 +2623,7 @@ body.vuo-malign-right  div[ng-controller="ControllerMain"] .options ul,
 body.vuo-malign-right  div[ng-controller="ControllerMain"] .options ul li { text-align: right !important; }
 
 #vuo_ld_preview {
-    position: fixed !important; bottom: 28px !important; right: 24px !important; left: auto !important;
+    position: fixed !important; top: calc(28px + (100vh - 56px) * var(--ld-y, 1)) !important; bottom: auto !important; right: 24px !important; left: auto !important;
     z-index: 10000 !important; box-sizing: border-box !important;
     display: flex !important; flex-direction: row !important; align-items: center !important; gap: 12px !important;
     padding: 14px 16px 12px 16px !important;
@@ -2557,13 +2633,13 @@ body.vuo-malign-right  div[ng-controller="ControllerMain"] .options ul li { text
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.60), inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
     font-family: var(--vuo-font) !important; letter-spacing: 0.06em !important;
     pointer-events: none !important;
-    opacity: 0 !important; transform: translateY(6px) !important;
-    transition: opacity 0.18s ease, transform 0.18s ease !important;
+    opacity: 0 !important; transform: translateY(calc(-100% * var(--ld-y, 1) + 6px)) !important;
+    transition: opacity 0.18s ease, transform 0.18s ease, top 0.18s ease !important;
 }
-#vuo_ld_preview.vuo-open { opacity: 1 !important; transform: none !important; }
+#vuo_ld_preview.vuo-open { opacity: 1 !important; transform: translateY(calc(-100% * var(--ld-y, 1))) !important; }
 #vuo_ld_preview[data-pos="left"] { left: 24px !important; right: auto !important; }
-#vuo_ld_preview[data-pos="center"] { left: 50% !important; right: auto !important; transform: translate(-50%, 6px) !important; }
-#vuo_ld_preview[data-pos="center"].vuo-open { transform: translateX(-50%) !important; }
+#vuo_ld_preview[data-pos="center"] { left: 50% !important; right: auto !important; transform: translate(-50%, calc(-100% * var(--ld-y, 1) + 6px)) !important; }
+#vuo_ld_preview[data-pos="center"].vuo-open { transform: translate(-50%, calc(-100% * var(--ld-y, 1))) !important; }
 .vuo-ldp-info { display: flex; flex-direction: column; gap: 10px; width: var(--ld-w, 280px); }
 .vuo-ldp-status {
     font-size: var(--ld-text, 13px); font-weight: 500; color: rgba(225, 238, 255, 0.90);
@@ -2578,7 +2654,7 @@ body.vuo-malign-right  div[ng-controller="ControllerMain"] .options ul li { text
 }
 
 #vuo_ldi_preview {
-    position: fixed !important; top: 16px !important; left: 16px !important; right: auto !important;
+    position: fixed !important; top: calc(16px + (100vh - 32px) * var(--ld-iy, 0)) !important; left: 16px !important; right: auto !important;
     z-index: 10000 !important; box-sizing: border-box !important;
     display: inline-flex !important; flex-direction: row !important; align-items: center !important;
     background: rgba(8, 10, 18, 0.70) !important;
@@ -2587,11 +2663,11 @@ body.vuo-malign-right  div[ng-controller="ControllerMain"] .options ul li { text
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.60), inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
     font-family: var(--vuo-font) !important;
     pointer-events: none !important; opacity: 0 !important;
-    transform: scale(var(--ld-info, 1)) !important; transform-origin: top left !important;
+    transform: translateY(calc(-100% * var(--ld-iy, 0) * var(--ld-info, 1))) scale(var(--ld-info, 1)) !important; transform-origin: top left !important;
     transition: opacity 0.18s ease !important;
 }
 #vuo_ldi_preview.vuo-open { opacity: 1 !important; }
-#vuo_ldi_preview[data-pos="center"] { left: 50% !important; transform: translateX(-50%) scale(var(--ld-info, 1)) !important; transform-origin: top center !important; }
+#vuo_ldi_preview[data-pos="center"] { left: 50% !important; transform: translateX(-50%) translateY(calc(-100% * var(--ld-iy, 0) * var(--ld-info, 1))) scale(var(--ld-info, 1)) !important; transform-origin: top center !important; }
 #vuo_ldi_preview[data-pos="right"] { left: auto !important; right: 16px !important; transform-origin: top right !important; }
 .vuo-ldi-map {
     width: 72px; height: 72px; flex-shrink: 0;

@@ -766,7 +766,8 @@
         position:      {'en':'Position','bg':'Позиция','cs':'Pozice','da':'Placering','de':'Position','el':'Θέση','es-es':'Posición','et':'Asukoht','fi':'Sijainti','fr':'Position','he':'מיקום','hr':'Položaj','hu':'Pozíció','it':'Posizione','ja':'位置','ko':'위치','lt':'Padėtis','nl':'Positie','no':'Plassering','pl':'Pozycja','pt-br':'Posição','pt-pt':'Posição','ru':'Положение','sk':'Pozícia','sv-se':'Placering','th':'ตำแหน่ง','tr':'Konum','uk':'Положення','vi':'Vị trí','zh-cn':'位置','zh-tw':'位置'},
         reset_loading: {'en':'Reset loading screen','bg':'Нулирай екрана за зареждане','cs':'Obnovit načítací obrazovku','da':'Nulstil indlæsningsskærm','de':'Ladebildschirm zurücksetzen','el':'Επαναφορά οθόνης φόρτωσης','es-es':'Restablecer pantalla de carga','et':'Lähtesta laadimisekraan','fi':'Palauta latausruutu','fr':"Réinitialiser l'écran de chargement",'he':'אפס מסך טעינה','hr':'Vrati zaslon učitavanja','hu':'Betöltőképernyő visszaállítása','it':'Ripristina schermata di caricamento','ja':'ロード画面をリセット','ko':'로딩 화면 초기화','lt':'Atstatyti įkėlimo ekraną','nl':'Laadscherm herstellen','no':'Tilbakestill lasteskjerm','pl':'Resetuj ekran ładowania','pt-br':'Redefinir tela de carregamento','pt-pt':'Repor ecrã de carregamento','ru':'Сбросить экран загрузки','sk':'Obnoviť načítavaciu obrazovku','sv-se':'Återställ laddningsskärm','th':'รีเซ็ตหน้าจอโหลด','tr':'Yükleme ekranını sıfırla','uk':'Скинути екран завантаження','vi':'Đặt lại màn hình tải','zh-cn':'重置加载画面','zh-tw':'重置載入畫面'},
         progress_bar:  {'en':'Progress bar','bg':'Лента за напредък','cs':'Ukazatel průběhu','da':'Statuslinje','de':'Fortschrittsbalken','el':'Γραμμή προόδου','es-es':'Barra de progreso','et':'Edenemisriba','fi':'Edistymispalkki','fr':'Barre de progression','he':'סרגל התקדמות','hr':'Traka napretka','hu':'Folyamatjelző','it':'Barra di avanzamento','ja':'プログレスバー','ko':'진행률 표시줄','lt':'Eigos juosta','nl':'Voortgangsbalk','no':'Fremdriftslinje','pl':'Pasek postępu','pt-br':'Barra de progresso','pt-pt':'Barra de progresso','ru':'Полоса загрузки','sk':'Indikátor priebehu','sv-se':'Förloppsindikator','th':'แถบความคืบหน้า','tr':'İlerleme çubuğu','uk':'Смуга завантаження','vi':'Thanh tiến trình','zh-cn':'进度条','zh-tw':'進度列'},
-        server_info:   {'en':'Server info','bg':'Информация за сървъра','cs':'Informace o serveru','da':'Serverinfo','de':'Serverinfo','el':'Πληροφορίες διακομιστή','es-es':'Info del servidor','et':'Serveri teave','fi':'Palvelimen tiedot','fr':'Infos du serveur','he':'פרטי שרת','hr':'Podaci o poslužitelju','hu':'Szerverinfó','it':'Info server','ja':'サーバー情報','ko':'서버 정보','lt':'Serverio informacija','nl':'Serverinfo','no':'Serverinfo','pl':'Informacje o serwerze','pt-br':'Info do servidor','pt-pt':'Info do servidor','ru':'Инфо о сервере','sk':'Informácie o serveri','sv-se':'Serverinfo','th':'ข้อมูลเซิร์ฟเวอร์','tr':'Sunucu bilgisi','uk':'Інфо про сервер','vi':'Thông tin máy chủ','zh-cn':'服务器信息','zh-tw':'伺服器資訊'}
+        server_info:   {'en':'Server info','bg':'Информация за сървъра','cs':'Informace o serveru','da':'Serverinfo','de':'Serverinfo','el':'Πληροφορίες διακομιστή','es-es':'Info del servidor','et':'Serveri teave','fi':'Palvelimen tiedot','fr':'Infos du serveur','he':'פרטי שרת','hr':'Podaci o poslužitelju','hu':'Szerverinfó','it':'Info server','ja':'サーバー情報','ko':'서버 정보','lt':'Serverio informacija','nl':'Serverinfo','no':'Serverinfo','pl':'Informacje o serwerze','pt-br':'Info do servidor','pt-pt':'Info do servidor','ru':'Инфо о сервере','sk':'Informácie o serveri','sv-se':'Serverinfo','th':'ข้อมูลเซิร์ฟเวอร์','tr':'Sunucu bilgisi','uk':'Інфо про сервер','vi':'Thông tin máy chủ','zh-cn':'服务器信息','zh-tw':'伺服器資訊'},
+        vertical_pos:  {'en':'Vertical position','bg':'Вертикална позиция','cs':'Svislá pozice','da':'Lodret placering','de':'Vertikale Position','el':'Κάθετη θέση','es-es':'Posición vertical','et':'Vertikaalne asukoht','fi':'Pystysijainti','fr':'Position verticale','he':'מיקום אנכי','hr':'Okomiti položaj','hu':'Függőleges pozíció','it':'Posizione verticale','ja':'縦位置','ko':'세로 위치','lt':'Vertikali padėtis','nl':'Verticale positie','no':'Vertikal plassering','pl':'Pozycja pionowa','pt-br':'Posição vertical','pt-pt':'Posição vertical','ru':'Вертикальное положение','sk':'Zvislá pozícia','sv-se':'Vertikal placering','th':'ตำแหน่งแนวตั้ง','tr':'Dikey konum','uk':'Вертикальне положення','vi':'Vị trí dọc','zh-cn':'垂直位置','zh-tw':'垂直位置'}
     };
     function vuoT(key) {
         var m = vuoLocI18n[key] || vuoNavI18n[key];
@@ -1597,7 +1598,7 @@
                     menuLayout:'centered', menuAlign:'center', loBtnX:0, loBtnY:0, loLogoX:0, loLogoY:0, loLogoScale:1, loLogoHide:false, navIconsOnly:false, loNavX:0, loNavY:0,
                     navPbX:0, navPbY:0, navGmX:0, navGmY:0, navGtX:0, navGtY:0, navLgX:0, navLgY:0,
                     navNwX:0, navNwY:0, navStX:0, navStY:0, navMuX:0, navMuY:0,
-                    ldWidth:280, ldBar:7, ldText:13, ldPos:'right', ldInfoScale:1, ldInfoPos:'left' };
+                    ldWidth:280, ldBar:7, ldText:13, ldPos:'right', ldY:0, ldInfoScale:1, ldInfoPos:'left', ldInfoY:100 };
     var vuoSt  = { built:false, open:false, panel:null, btn:null, bgs:[], defbgs:[], defOpen:false, cusOpen:false, navTarget:'all' };
 
     function vuoSaveCfg(){ try { if (typeof lua!=='undefined' && lua.Run) lua.Run("file.Write('vuo_settings.txt', %s)", JSON.stringify(vuoCfg)); } catch(e){} }
@@ -2016,9 +2017,11 @@
                 '<div class="vuo-st-row"><span data-l="bar_thickness">Bar thickness</span><div id="vuo_st_ldb" class="vuo-st-slider"><div id="vuo_st_ldbfill" class="vuo-st-sfill"></div></div></div>'+
                 '<div class="vuo-st-row"><span data-l="text_size">Text size</span><div id="vuo_st_ldt" class="vuo-st-slider"><div id="vuo_st_ldtfill" class="vuo-st-sfill"></div></div></div>'+
                 '<div class="vuo-st-row"><span data-l="position">Position</span><div id="vuo_st_ldpos" class="vuo-st-seg"><div class="vuo-st-segbtn" data-lp="left" data-l="al_left">Left</div><div class="vuo-st-segbtn" data-lp="center" data-l="al_center">Center</div><div class="vuo-st-segbtn" data-lp="right" data-l="al_right">Right</div></div></div>'+
+                '<div class="vuo-st-row"><span data-l="vertical_pos">Vertical position</span><div id="vuo_st_ldy" class="vuo-st-slider"><div id="vuo_st_ldyfill" class="vuo-st-sfill"></div></div></div>'+
                 '<div class="vuo-st-subcap" data-l="server_info">Server info</div>'+
                 '<div class="vuo-st-row"><span data-l="size">Size</span><div id="vuo_st_ldis" class="vuo-st-slider"><div id="vuo_st_ldisfill" class="vuo-st-sfill"></div></div></div>'+
                 '<div class="vuo-st-row"><span data-l="position">Position</span><div id="vuo_st_ldipos" class="vuo-st-seg"><div class="vuo-st-segbtn" data-lip="left" data-l="al_left">Left</div><div class="vuo-st-segbtn" data-lip="center" data-l="al_center">Center</div><div class="vuo-st-segbtn" data-lip="right" data-l="al_right">Right</div></div></div>'+
+                '<div class="vuo-st-row"><span data-l="vertical_pos">Vertical position</span><div id="vuo_st_ldiy" class="vuo-st-slider"><div id="vuo_st_ldiyfill" class="vuo-st-sfill"></div></div></div>'+
                 '<div class="vuo-st-row"><span data-l="reset_loading">Reset loading screen</span><span id="vuo_st_ldreset" class="vuo-st-link" data-l="reset">Reset</span></div>'+
               '</div>'+
             '</div>'+
@@ -2076,9 +2079,11 @@
         vuoLdBind('vuo_st_ldb', function(f){ vuoCfg.ldBar=Math.round(VUO_LD.b[0]+f*(VUO_LD.b[1]-VUO_LD.b[0])); });
         vuoLdBind('vuo_st_ldt', function(f){ vuoCfg.ldText=Math.round(VUO_LD.t[0]+f*(VUO_LD.t[1]-VUO_LD.t[0])); });
         var vuoStLdPos=vuoEl('vuo_st_ldpos'); if(vuoStLdPos){ var lpb=vuoStLdPos.querySelectorAll('.vuo-st-segbtn'); for(var lk=0;lk<lpb.length;lk++){ lpb[lk].addEventListener('click', function(){ vuoCfg.ldPos=this.getAttribute('data-lp'); vuoStSync(); vuoSaveCfg(); vuoUiPlay('accept'); vuoLdPreviewShow(); vuoLdPreviewHide(); }); } }
+        vuoLdBind('vuo_st_ldy', function(f){ vuoCfg.ldY=Math.round(f*100); });
         vuoLdBind('vuo_st_ldis', function(f){ vuoCfg.ldInfoScale=Math.round((VUO_LD.s[0]+f*(VUO_LD.s[1]-VUO_LD.s[0]))*100)/100; });
         var vuoStLdIPos=vuoEl('vuo_st_ldipos'); if(vuoStLdIPos){ var lipb=vuoStLdIPos.querySelectorAll('.vuo-st-segbtn'); for(var lik=0;lik<lipb.length;lik++){ lipb[lik].addEventListener('click', function(){ vuoCfg.ldInfoPos=this.getAttribute('data-lip'); vuoStSync(); vuoSaveCfg(); vuoUiPlay('accept'); vuoLdPreviewShow(); vuoLdPreviewHide(); }); } }
-        vuoEl('vuo_st_ldreset').addEventListener('click', function(){ vuoCfg.ldWidth=VUO_LD.w[2]; vuoCfg.ldBar=VUO_LD.b[2]; vuoCfg.ldText=VUO_LD.t[2]; vuoCfg.ldPos='right'; vuoCfg.ldInfoScale=VUO_LD.s[2]; vuoCfg.ldInfoPos='left'; vuoStSync(); vuoSaveCfg(); vuoLdPreviewShow(); vuoLdPreviewHide(); });
+        vuoLdBind('vuo_st_ldiy', function(f){ vuoCfg.ldInfoY=Math.round(f*100); });
+        vuoEl('vuo_st_ldreset').addEventListener('click', function(){ vuoCfg.ldWidth=VUO_LD.w[2]; vuoCfg.ldBar=VUO_LD.b[2]; vuoCfg.ldText=VUO_LD.t[2]; vuoCfg.ldPos='right'; vuoCfg.ldY=VUO_LD.y[2]; vuoCfg.ldInfoScale=VUO_LD.s[2]; vuoCfg.ldInfoPos='left'; vuoCfg.ldInfoY=VUO_LD.iy[2]; vuoStSync(); vuoSaveCfg(); vuoLdPreviewShow(); vuoLdPreviewHide(); });
         var vuoStLdSec=vuoEl('vuo_st_ldsec'); if(vuoStLdSec){
             vuoStLdSec.addEventListener('mouseenter', function(){ vuoLd.hover=true; vuoLdPreviewShow(); });
             vuoStLdSec.addEventListener('mouseleave', function(){ vuoLd.hover=false; vuoLdPreviewHide(); });
@@ -2092,7 +2097,8 @@
 
         vuoStRenderBg(); vuoStSync();
     }
-    var VUO_LD = { w:[180,560,280], b:[3,16,7], t:[10,22,13], s:[0.7,1.6,1] };
+    var VUO_LD = { w:[180,560,280], b:[3,16,7], t:[10,22,13], s:[0.7,1.6,1], y:[0,100,0], iy:[0,100,100] };
+    function vuoLdY(k, d){ var v=Number(vuoCfg[k]); return isFinite(v) && vuoCfg[k]!==null && vuoCfg[k]!=='' ? Math.max(0, Math.min(100, v)) : d; }
     var vuoLd  = { el:null, info:null, hover:false, t:null };
     function vuoLdPreviewEl(){
         if(vuoLd.el) return vuoLd.el;
@@ -2111,7 +2117,9 @@
         d.style.setProperty('--ld-bar', (vuoCfg.ldBar||VUO_LD.b[2])+'px');
         d.style.setProperty('--ld-text', (vuoCfg.ldText||VUO_LD.t[2])+'px');
         d.setAttribute('data-pos', vuoCfg.ldPos||'right');
+        d.style.setProperty('--ld-y', 1 - vuoLdY('ldY', VUO_LD.y[2]) / 100);
         n.style.setProperty('--ld-info', vuoCfg.ldInfoScale||VUO_LD.s[2]);
+        n.style.setProperty('--ld-iy', 1 - vuoLdY('ldInfoY', VUO_LD.iy[2]) / 100);
         n.setAttribute('data-pos', vuoCfg.ldInfoPos||'left');
         d.classList.add('vuo-open'); n.classList.add('vuo-open');
     }
@@ -2181,8 +2189,10 @@
         f=vuoEl('vuo_st_ldbfill'); if(f) f.style.width=Math.max(0,Math.min(100,((vuoCfg.ldBar||VUO_LD.b[2])-VUO_LD.b[0])/(VUO_LD.b[1]-VUO_LD.b[0])*100))+'%';
         f=vuoEl('vuo_st_ldtfill'); if(f) f.style.width=Math.max(0,Math.min(100,((vuoCfg.ldText||VUO_LD.t[2])-VUO_LD.t[0])/(VUO_LD.t[1]-VUO_LD.t[0])*100))+'%';
         var lp2=vuoEl('vuo_st_ldpos'); if(lp2){ var lpseg=lp2.querySelectorAll('.vuo-st-segbtn'); for(var lps=0;lps<lpseg.length;lps++){ lpseg[lps].classList.toggle('vuo-sel', lpseg[lps].getAttribute('data-lp')===(vuoCfg.ldPos||'right')); } }
+        f=vuoEl('vuo_st_ldyfill'); if(f) f.style.width=vuoLdY('ldY', VUO_LD.y[2])+'%';
         f=vuoEl('vuo_st_ldisfill'); if(f) f.style.width=Math.max(0,Math.min(100,((vuoCfg.ldInfoScale||VUO_LD.s[2])-VUO_LD.s[0])/(VUO_LD.s[1]-VUO_LD.s[0])*100))+'%';
         var lip2=vuoEl('vuo_st_ldipos'); if(lip2){ var lipseg=lip2.querySelectorAll('.vuo-st-segbtn'); for(var lis=0;lis<lipseg.length;lis++){ lipseg[lis].classList.toggle('vuo-sel', lipseg[lis].getAttribute('data-lip')===(vuoCfg.ldInfoPos||'left')); } }
+        f=vuoEl('vuo_st_ldiyfill'); if(f) f.style.width=vuoLdY('ldInfoY', VUO_LD.iy[2])+'%';
     }
     function vuoBgIsOn(url){ return (vuoCfg.bgOn||[]).indexOf(url)>=0; }
     function vuoBgToggle(url){

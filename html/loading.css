@@ -100,7 +100,7 @@ body.dark {
 
 .server_info {
     position: absolute;
-    top: 16px;
+    top: calc(16px + (100vh - 32px) * var(--ld-iy, 0));
     left: 16px;
     display: inline-flex;
     flex-direction: row;
@@ -114,7 +114,7 @@ body.dark {
     visibility: hidden;
     white-space: nowrap;
     box-sizing: border-box;
-    transform: scale(var(--ld-info, 1));
+    transform: translateY(calc(-100% * var(--ld-iy, 0) * var(--ld-info, 1))) scale(var(--ld-info, 1));
     transform-origin: top left;
     z-index: 10;
     box-shadow:

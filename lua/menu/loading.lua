@@ -39,16 +39,18 @@ local function nfStyleInjectJS()
                 ";--ld-w:" .. nfNum( cfg.ldWidth, 180, 560, 280 ) .. "px" ..
                 ";--ld-bar:" .. nfNum( cfg.ldBar, 3, 16, 7 ) .. "px" ..
                 ";--ld-text:" .. nfNum( cfg.ldText, 10, 22, 13 ) .. "px" ..
-                ";--ld-info:" .. string.format( "%.2f", scale ) .. "}"
+                ";--ld-info:" .. string.format( "%.2f", scale ) ..
+                ";--ld-y:" .. string.format( "%.2f", 1 - nfNum( cfg.ldY, 0, 100, 0 ) / 100 ) ..
+                ";--ld-iy:" .. string.format( "%.2f", 1 - nfNum( cfg.ldInfoY, 0, 100, 100 ) / 100 ) .. "}"
 
     if ( cfg.ldPos == "left" ) then
         css = css .. "#nf_loading{left:24px !important;right:auto !important}"
     elseif ( cfg.ldPos == "center" ) then
-        css = css .. "#nf_loading{left:50% !important;right:auto !important;transform:translateX(-50%) !important}"
+        css = css .. "#nf_loading{left:50% !important;right:auto !important;transform:translateX(-50%) translateY(calc(-100% * var(--ld-y,1))) !important}"
     end
 
     if ( cfg.ldInfoPos == "center" ) then
-        css = css .. ".server_info{left:50% !important;transform:translateX(-50%) scale(var(--ld-info,1)) !important;transform-origin:top center !important}"
+        css = css .. ".server_info{left:50% !important;transform:translateX(-50%) translateY(calc(-100% * var(--ld-iy,0) * var(--ld-info,1))) scale(var(--ld-info,1)) !important;transform-origin:top center !important}"
     elseif ( cfg.ldInfoPos == "right" ) then
         css = css .. ".server_info{left:auto !important;right:16px !important;transform-origin:top right !important}"
     end
@@ -156,7 +158,7 @@ end
 
 local _nfCSS = [[
 @keyframes nfFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-#nf_loading{position:fixed;right:24px;bottom:28px;background:rgba(10,10,14,0.78);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:14px 16px 12px 16px;display:flex;flex-direction:row;align-items:center;gap:12px;z-index:2147483647;pointer-events:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;box-shadow:0 4px 24px rgba(0,0,0,0.55)}
+#nf_loading{position:fixed;right:24px;top:calc(28px + (100vh - 56px) * var(--ld-y,1));transform:translateY(calc(-100% * var(--ld-y,1)));background:rgba(10,10,14,0.78);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:14px 16px 12px 16px;display:flex;flex-direction:row;align-items:center;gap:12px;z-index:2147483647;pointer-events:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;box-shadow:0 4px 24px rgba(0,0,0,0.55)}
 #nf_info{display:flex;flex-direction:column;gap:10px;width:var(--ld-w,280px)}
 #nf_status{font-size:var(--ld-text,13px);color:rgba(225,238,255,0.90);letter-spacing:0.09em;text-shadow:0 1px 6px rgba(0,0,0,0.90);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4}
 #nf_cancel{font-size:calc(var(--ld-text,13px) * 0.77);width:6.6em;height:2.2em;flex-shrink:0;color:rgba(210,225,248,0.85);letter-spacing:0.09em;border-radius:4px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;pointer-events:none;user-select:none;-webkit-user-select:none}

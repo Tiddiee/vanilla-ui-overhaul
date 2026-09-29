@@ -228,6 +228,7 @@ for %%F in (
     "lua\menu\errors.lua"
     "lua\menu\mount\vgui\workshop.lua"
     "lua\menu\problems\problems_pnl.lua"
+    "lua\menu\openurl.lua"
     "lua\autorun\client\spawnmenu_theme.lua"
     "workshop\materials\console\background01.vtf"
     "workshop\materials\console\background01_widescreen.vtf"

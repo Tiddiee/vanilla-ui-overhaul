@@ -85,21 +85,34 @@ local function wsFontWorks( family )
 
 end
 
-local function wsFonts( cfg )
+local familyCache = {}
+
+function VUO_FontFamily()
+
+	local name = wsSettings().font
+	if ( !isstring( name ) or name == "" or string.find( name, "[/\\]" ) ) then return nil end
+	if ( familyCache[ name ] != nil ) then return familyCache[ name ] or nil end
 
 	local family
 
-	if ( isstring( cfg.font ) and cfg.font != "" and !string.find( cfg.font, "[/\\]" ) ) then
-		for _, ext in ipairs( { ".ttf", ".otf" } ) do
-			local path = "materials/vuo_fonts/" .. cfg.font .. ext
-			if ( file.Exists( path, "GAME" ) ) then
-				family = wsFamilyName( path )
-				break
-			end
+	for _, ext in ipairs( { ".ttf", ".otf" } ) do
+		local path = "materials/vuo_fonts/" .. name .. ext
+		if ( file.Exists( path, "GAME" ) ) then
+			family = wsFamilyName( path )
+			break
 		end
-		if ( family and !wsFontWorks( family ) ) then family = nil end
 	end
 
+	if ( family and !wsFontWorks( family ) ) then family = nil end
+
+	familyCache[ name ] = family or false
+	return family
+
+end
+
+local function wsFonts()
+
+	local family = VUO_FontFamily()
 	local suffix = family and ( "_" .. family ) or ""
 
 	surface.CreateFont( "WorkshopLarge" .. suffix, {
@@ -168,7 +181,7 @@ function PANEL:Init()
 	local pr, pg, pb = wsColor( cfg.accentBlue, 35, 135, 237 )
 	local sr, sg, sb = wsColor( cfg.accentGreen, 60, 200, 140 )
 
-	local fontLarge, fontSmall = wsFonts( cfg )
+	local fontLarge, fontSmall = wsFonts()
 
 	self.BoxColor		= Color( 8, 10, 18, 179 )
 	self.BorderColor	= Color( pr, pg, pb, 46 )

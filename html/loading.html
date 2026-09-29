@@ -7,7 +7,8 @@
 			#nf_loading {
 				position: fixed;
 				right: 24px;
-				bottom: 28px;
+				top: calc(28px + (100vh - 56px) * var(--ld-y, 1));
+				transform: translateY(calc(-100% * var(--ld-y, 1)));
 
 				background: rgba(8, 10, 18, 0.70);
 				border: 1px solid rgba(var(--vuo-a, 35, 135, 237), 0.18);

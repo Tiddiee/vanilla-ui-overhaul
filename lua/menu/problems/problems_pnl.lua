@@ -10,7 +10,7 @@ local THEME = {
 
     tabBarBg     = Color( 8,   8,   12,  140 ),
 
-    frameBorder  = Color( 255, 255, 255, 30  ),
+    frameBorder  = Color( 255, 255, 255, 26  ),
 
     tabActive    = Color( 35,  135, 237, 35  ),
 
@@ -89,6 +89,59 @@ local function nfDrawCircle( cx, cy, radius, col )
     surface.DrawPoly( poly )
 end
 
+local nfCorners = {}
+
+local function nfOutline( x, y, w, h, r, col )
+    local px = nfCorners[ r ]
+    if ( !px ) then
+        px = {}
+        for cy = 0, r - 1 do
+            for cx = 0, r - 1 do
+                local d = math.sqrt( ( r - cx - 0.5 ) ^ 2 + ( r - cy - 0.5 ) ^ 2 )
+                local a = 1 - math.abs( d - ( r - 0.5 ) )
+                if ( a > 0 ) then px[ #px + 1 ] = { cx, cy, a } end
+            end
+        end
+        nfCorners[ r ] = px
+    end
+    surface.SetDrawColor( col.r, col.g, col.b, col.a )
+    surface.DrawRect( x + r, y, w - r * 2, 1 )
+    surface.DrawRect( x + r, y + h - 1, w - r * 2, 1 )
+    surface.DrawRect( x, y + r, 1, h - r * 2 )
+    surface.DrawRect( x + w - 1, y + r, 1, h - r * 2 )
+    for _, p in ipairs( px ) do
+        surface.SetDrawColor( col.r, col.g, col.b, col.a * p[3] )
+        surface.DrawRect( x + p[1], y + p[2], 1, 1 )
+        surface.DrawRect( x + w - 1 - p[1], y + p[2], 1, 1 )
+        surface.DrawRect( x + p[1], y + h - 1 - p[2], 1, 1 )
+        surface.DrawRect( x + w - 1 - p[1], y + h - 1 - p[2], 1, 1 )
+    end
+end
+
+local function nfAccentLine( x, y, w, a, b )
+    for i = 0, w - 1, 2 do
+        local f = ( i + 1 ) / w
+        local r, g, bl, al
+        if ( f < 0.3 ) then
+            r, g, bl, al = a[1], a[2], a[3], 0.65 * f / 0.3
+        elseif ( f < 0.7 ) then
+            local k = ( f - 0.3 ) / 0.4
+            r, g, bl, al = Lerp( k, a[1], b[1] ), Lerp( k, a[2], b[2] ), Lerp( k, a[3], b[3] ), Lerp( k, 0.65, 0.55 )
+        else
+            r, g, bl, al = b[1], b[2], b[3], 0.55 * ( 1 - f ) / 0.3
+        end
+        local sw = math.min( 2, w - i )
+        surface.SetDrawColor( r, g, bl, al * 255 )
+        surface.DrawRect( x + i, y, sw, 1 )
+        surface.SetDrawColor( a[1], a[2], a[3], al * 40 )
+        surface.DrawRect( x + i, y - 1, sw, 1 )
+        surface.DrawRect( x + i, y + 1, sw, 1 )
+        surface.SetDrawColor( a[1], a[2], a[3], al * 16 )
+        surface.DrawRect( x + i, y - 2, sw, 1 )
+        surface.DrawRect( x + i, y + 2, sw, 1 )
+    end
+end
+
 local PANEL = {}
 
 function PANEL:Init()
@@ -138,12 +191,10 @@ function PANEL:Init()
 
     ProblemsFrame.Paint = function( frm, w, h )
         DrawBlur( frm, 6 )
-        draw.RoundedBox( 6, 0, 0, w, h, THEME.frameBg )
-        surface.SetDrawColor( THEME.frameBorder.r, THEME.frameBorder.g, THEME.frameBorder.b, THEME.frameBorder.a )
-        surface.DrawOutlinedRect( 0, 0, w, h, 1 )
+        draw.RoundedBox( 10, 0, 0, w, h, THEME.frameBg )
+        nfOutline( 0, 0, w, h, 10, THEME.frameBorder )
 
-        surface.SetDrawColor( THEME.separator.r, THEME.separator.g, THEME.separator.b, THEME.separator.a )
-        surface.DrawRect( 0, 26, w, 1 )
+        nfAccentLine( 1, 26, w - 2, accBlue, accGreen )
 
         draw.SimpleText( "Problems", "DermaDefault", 10, 8, Color(180, 185, 195, 140), TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP )
     end
