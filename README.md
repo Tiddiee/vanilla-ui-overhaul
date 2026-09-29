@@ -1,6 +1,8 @@
 # Vanilla UI+
 
-A redesigned main menu. Choose your own fonts, backgrounds, music and layout. Made this mod for personal use with help from AI, then decided to throw it out there for anyone interested.
+A redesigned main menu. Choose your own fonts, backgrounds, music and layout.
+
+Made this mod for personal use, then decided to throw it out there for anyone interested. AI helped with the code, while the design and decisions are my own.
 
 > Bug reports welcome via [Issues](https://github.com/qudeowl/vanilla-ui-overhaul/issues).
 
