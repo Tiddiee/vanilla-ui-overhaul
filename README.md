@@ -55,4 +55,5 @@ A redesigned main menu. Choose your own fonts, backgrounds, music and layout. Ma
 ## Credits
 
 > Inspired by [TuPiDAn](https://steamcommunity.com/sharedfiles/filedetails/?id=3599195211)'s Dark Main Menu, [Remedy](https://steamcommunity.com/id/voidcubes/myworkshopfiles/)'s Theme Engine and [Portal](https://store.steampowered.com/bundle/234/Portal_Bundle/)
+> 
 > Made by [Qude](https://steamcommunity.com/id/qudeowl/myworkshopfiles/?appid=0&sort=score&browsefilter=myfiles&view=imagewall&p=1&numperpage=30)
