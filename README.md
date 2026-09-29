@@ -1,6 +1,6 @@
 # Vanilla UI+
 
-A redesigned main menu. Choose your own fonts, backgrounds, music and layout.
+A redesigned main menu. Choose your own fonts, backgrounds, music and layout. Made this mod for personal use with help from AI, then decided to throw it out there for anyone interested.
 
 > Bug reports welcome via [Issues](https://github.com/qudeowl/vanilla-ui-overhaul/issues).
 
@@ -54,6 +54,4 @@ A redesigned main menu. Choose your own fonts, backgrounds, music and layout.
 
 ## Credits
 
-Inspired by [TuPiDAn](https://steamcommunity.com/sharedfiles/filedetails/?id=3599195211)'s Dark Main Menu, [Remedy](https://steamcommunity.com/id/voidcubes/myworkshopfiles/)'s Theme Engine and [Portal](https://store.steampowered.com/bundle/234/Portal_Bundle/).
-
-Made by Qude, with help from AI.
+Inspired by [TuPiDAn](https://steamcommunity.com/sharedfiles/filedetails/?id=3599195211)'s Dark Main Menu, [Remedy](https://steamcommunity.com/id/voidcubes/myworkshopfiles/)'s Theme Engine and [Portal](https://store.steampowered.com/bundle/234/Portal_Bundle/)
