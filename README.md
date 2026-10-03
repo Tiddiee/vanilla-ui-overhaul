@@ -8,6 +8,15 @@ Test branch build: `v1.4.1b`. The automatic installers on this branch download t
 
 ## Installation
 
+**Linux (Proton) setup**
+
+Complete these steps before installing Vanilla UI+:
+
+1. Download and run the latest [GModPatchTool](https://github.com/solsticegamestudios/GModPatchTool/releases). It includes fixes for Linux launch and main-menu issues.
+2. In Steam, open Garry's Mod **Properties > Betas** and select the `x86-64` branch.
+3. Open **Properties > Compatibility**, enable **Force the use of a specific Steam Play compatibility tool**, and select **Proton Experimental**.
+4. Install Vanilla UI+ using the Linux script below. Choose **Standard** mode for full UI support; the add-ons method may not load all interface files.
+
 **Automatic (Recommended)**
 
 1. On Windows, run `install_update_uninstall_vanilla_ui.bat`. On Linux, run `bash install.sh` from a terminal (requires `curl` and `unzip`)
