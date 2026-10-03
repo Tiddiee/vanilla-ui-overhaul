@@ -8,37 +8,39 @@ Test branch build: `v1.4.1b`. The automatic installers on this branch download t
 
 ## Installation
 
-**Linux (Proton) setup**
+> Make sure the game is closed before running the installer.
 
-Complete these steps before installing Vanilla UI+:
-
-1. In Steam, open Garry's Mod **Properties > Betas** and select the `x86-64` branch.
-2. Open **Properties > Compatibility**, enable **Force the use of a specific Steam Play compatibility tool**, and select **Proton Experimental**.
-3. Run `bash install.sh`. Choose menu option **4** to download and run [GModPatchTool](https://github.com/solsticegamestudios/GModPatchTool/releases) by itself, or start an install and accept the default **Yes** to run it before Vanilla UI+ installs. The script verifies the download before running it.
-4. Choose **Standard** mode for full UI support; the add-ons method may not load all interface files.
-
-**Automatic (Recommended)**
+**Automatic install (Recommended)**
 
 1. On Windows, run `install_update_uninstall_vanilla_ui.bat`. On Linux, run `bash install.sh` from a terminal (requires `curl` and `unzip`)
 2. Select your preferred setup when prompted
 3. The script finds your GMod folder automatically or asks for its path, then installs the files
 4. Launch Garry's Mod
 
-> Make sure the game is closed before running the installer.
+**Linux Install**
+
+1. In Steam, open Garry's Mod **Properties > Betas** and select the `x86-64` branch.
+2. Open **Properties > Compatibility**, enable **Force the use of a specific Steam Play compatibility tool**, and select **Proton Experimental**.
+3. Run `bash install.sh`. Choose menu option **4** to download and run [GModPatchTool](https://github.com/solsticegamestudios/GModPatchTool/releases) by itself, or start an install and accept the default **Yes** to run it before Vanilla UI+ installs. The script verifies the download before running it.
+4. Choose **Standard** mode for full UI support; the add-ons method may not load all interface files.
+
+This setup has resolved issues on some Linux systems. If it causes problems on your system, you can also try installing without the `x86-64` branch or Proton Experimental, and skip GModPatchTool when prompted.
+
 
 **Silent Linux commands**
 
-Run the script with one of these options to skip the interactive menus:
+Run the script with one of the following flags to install, update, uninstall, or run GModPatchTool without the interactive menu:
 
 ```sh
-bash install.sh -a -P    # Standard install, run GModPatchTool first
-bash install.sh -A       # Addons-folder install
-bash install.sh -U -a -P # Standard update, run GModPatchTool first
-bash install.sh -U -A    # Addons-folder update
-bash install.sh -r       # Uninstall
+./install.sh -a -P    # Standard install, run GModPatchTool first
+./install.sh -A       # Addons-folder install
+./install.sh -P       # run GModPatchTool
+./install.sh -U -a -P # Standard update, run GModPatchTool first
+./install.sh -U -A    # Addons-folder update
+./install.sh -r       # Uninstall
 ```
 
-Interactive installs ask whether to download and run GModPatchTool first (default: yes). Silent install/update commands run it when `-P` or `--patch-gmod` is supplied. The Linux executable is downloaded from its official latest release and checksum-verified before it runs. The script detects the Steam library automatically. If it cannot find Garry's Mod, set `GMOD_DIR` to the full `garrysmod` folder path. Silent commands fail rather than prompt if the game is running or its folder cannot be found.
+Interactive installs ask whether to download and run GModPatchTool first (default: yes). Use `-P` or `--patch-gmod` by itself to run the patcher without installing Vanilla UI+, or combine it with install/update flags to patch first. The Linux executable is downloaded from its official latest release and checksum-verified before it runs. The script detects the Steam library automatically. If it cannot find Garry's Mod, set `GMOD_DIR` to the full `garrysmod` folder path. Silent commands fail rather than prompt if the game is running or its folder cannot be found.
 
 **Manual**
 

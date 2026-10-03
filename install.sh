@@ -27,6 +27,7 @@ Usage:
     bash install.sh                 Interactive menu
     bash install.sh -a              Silent standard install
     bash install.sh -A              Silent addons install
+    bash install.sh -P              Download and run GModPatchTool by itself
     bash install.sh -a -P           Standard install after running GModPatchTool
     bash install.sh -r              Silent uninstall
     bash install.sh -U -a           Silent standard update
@@ -35,7 +36,7 @@ Usage:
 Options:
     -a, --install-standard  Install in standard mode
     -A, --install-addon     Install in the addons folder
-    -P, --patch-gmod        Download and run GModPatchTool before install/update
+    -P, --patch-gmod        Download and run GModPatchTool alone or before install/update
     -r, --uninstall         Uninstall
     -U, --update            Update (combine with -a or -A to select a mode)
     -h, --help              Show this help
@@ -420,10 +421,17 @@ run_silent() {
     elif [[ -n "$install_mode" ]]; then
         action=install
         mode="$install_mode"
+    elif [[ "$request_patch_tool" == true ]]; then
+        action=patch_tool_only
     else
         printf 'Choose an install, update, or uninstall option.\n' >&2
         usage >&2
         return 2
+    fi
+
+    if [[ "$action" == patch_tool_only ]]; then
+        run_patch_tool_only
+        return $?
     fi
 
     gmod="$(resolve_gmod_silent)" || return 1
