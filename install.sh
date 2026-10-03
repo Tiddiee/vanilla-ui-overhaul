@@ -462,13 +462,14 @@ main() {
         esac
 
         gmod="$(prompt_for_gmod)" || continue
-        read -r -p "Download and run GModPatchTool before installing Vanilla UI+? [Y/n] " answer || true
+        read -r -p "Download and run GModPatchTool before installing Vanilla UI+? (Reccomended) [Y/n] " answer || true
         if [[ "$answer" =~ ^[Nn]$ ]]; then
             patch_tool=false
         else
             patch_tool=true
         fi
         install_or_update "$action" "$mode" "$gmod" false "$patch_tool"
+        return $?
     done
 }
 
