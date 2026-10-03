@@ -5,7 +5,7 @@ title Vanilla UI Overhaul
 :menu
 cls
 echo.
-echo  Vanilla UI+ v1.4.1b
+echo  Vanilla UI+ v1.4
 echo  github.com/qudeowl/vanilla-ui-overhaul
 echo.
 echo   1. Install
@@ -24,7 +24,7 @@ goto menu
 cls
 echo.
 echo  Update removes the files of every previous version, then installs
-echo  test build v1.4.1b. Your settings, music, sounds, backgrounds and
+echo  test build v1.4. Your settings, music, sounds, backgrounds and
 echo  fonts are kept.
 echo.
 echo   1. Continue
@@ -37,7 +37,7 @@ set "action=update"
 goto variant
 
 :variant
-set "archive=Vanilla_UI_Overhaul_v1.4.1b.zip"
+set "archive=Vanilla_UI_Overhaul_v1.4.zip"
 set "mode="
 cls
 echo.

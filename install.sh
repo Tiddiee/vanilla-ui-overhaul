@@ -2,8 +2,8 @@
 
 set -Eeuo pipefail
 
-readonly VERSION="v1.4.1b"
-readonly ARCHIVE="Vanilla_UI_Overhaul_v1.4.1b.zip"
+readonly VERSION="v1.4"
+readonly ARCHIVE="Vanilla_UI_Overhaul_v1.4.zip"
 readonly BRANCH_ARCHIVE_URL="https://github.com/Tiddiee/vanilla-ui-overhaul/archive/refs/heads/test/1.4.1b.zip"
 readonly GMODPATCH_ARCHIVE="GModPatchTool-Linux.zip"
 readonly GMODPATCH_URL="https://github.com/solsticegamestudios/GModPatchTool/releases/latest/download/${GMODPATCH_ARCHIVE}"
@@ -459,7 +459,7 @@ main() {
         case "$choice" in
             1) action=install ;;
             2)
-                printf '\nUpdate removes files from previous versions, then installs v1.4.1b.\n'
+                printf '\nUpdate removes files from previous versions, then installs v1.4.\n'
                 printf 'Settings, music, sounds, backgrounds and fonts are kept.\n'
                 read -r -p "Continue? [y/N] " answer || true
                 [[ "$answer" =~ ^[Yy]$ ]] || continue

@@ -2,7 +2,7 @@
 
 A redesigned main menu. Choose your own fonts, backgrounds, music and layout.
 
-Test branch build: `v1.4.1b`. The automatic installers on this branch download the branch snapshot; the published latest release remains v1.4.
+Test branch version: `v1.4`. The automatic installers download the source snapshot from branch `test/1.4.1b`.
 
 > Bug reports welcome via [Issues](https://github.com/qudeowl/vanilla-ui-overhaul/issues).
 
