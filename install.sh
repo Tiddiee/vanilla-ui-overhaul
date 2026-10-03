@@ -5,6 +5,9 @@ set -Eeuo pipefail
 readonly VERSION="v1.4.1b"
 readonly ARCHIVE="Vanilla_UI_Overhaul_v1.4.1b.zip"
 readonly BRANCH_ARCHIVE_URL="https://github.com/Tiddiee/vanilla-ui-overhaul/archive/refs/heads/test/1.4.1b.zip"
+readonly GMODPATCH_ARCHIVE="GModPatchTool-Linux.zip"
+readonly GMODPATCH_URL="https://github.com/solsticegamestudios/GModPatchTool/releases/latest/download/${GMODPATCH_ARCHIVE}"
+readonly GMODPATCH_SUMS_URL="https://github.com/solsticegamestudios/GModPatchTool/releases/latest/download/SHA256SUMS.txt"
 TMP_DIR=""
 
 cleanup() {
@@ -24,6 +27,7 @@ Usage:
     bash install.sh                 Interactive menu
     bash install.sh -a              Silent standard install
     bash install.sh -A              Silent addons install
+    bash install.sh -a -P           Standard install after running GModPatchTool
     bash install.sh -r              Silent uninstall
     bash install.sh -U -a           Silent standard update
     bash install.sh -U -A           Silent addons update
@@ -31,6 +35,7 @@ Usage:
 Options:
     -a, --install-standard  Install in standard mode
     -A, --install-addon     Install in the addons folder
+    -P, --patch-gmod        Download and run GModPatchTool before install/update
     -r, --uninstall         Uninstall
     -U, --update            Update (combine with -a or -A to select a mode)
     -h, --help              Show this help
@@ -138,6 +143,32 @@ ensure_game_closed() {
     done
 }
 
+run_gmod_patch_tool() {
+    local patch_dir="$TMP_DIR/gmodpatch" archive="$TMP_DIR/$GMODPATCH_ARCHIVE"
+    local sums="$TMP_DIR/SHA256SUMS.txt" expected
+
+    mkdir -p -- "$patch_dir"
+    printf '\nDownloading GModPatchTool for Linux...\n'
+    curl -fL --retry 2 --output "$archive" "$GMODPATCH_URL"
+    curl -fL --retry 2 --output "$sums" "$GMODPATCH_SUMS_URL"
+
+    expected="$(awk '$2 == "GModPatchTool-Linux.zip" { print $1; exit }' "$sums")"
+    if [[ ! "$expected" =~ ^[[:xdigit:]]{64}$ ]]; then
+        printf 'Could not find the Linux patch-tool checksum in the official manifest.\n' >&2
+        return 1
+    fi
+    printf '%s  %s\n' "$expected" "$archive" | sha256sum --check -
+
+    unzip -q "$archive" -d "$patch_dir"
+    if [[ ! -f "$patch_dir/gmodpatchtool" ]]; then
+        printf 'The GModPatchTool archive did not contain the expected Linux executable.\n' >&2
+        return 1
+    fi
+    chmod u+x "$patch_dir/gmodpatchtool"
+    printf '\nRunning GModPatchTool. It will patch Garry\x27s Mod before Vanilla UI+ installs.\n'
+    "$patch_dir/gmodpatchtool" --skip-exit-prompt
+}
+
 remove_files() {
     local gmod="$1" keep_data="${2:-false}" relative_path path child
     local -a files=(
@@ -235,7 +266,7 @@ remove_files() {
 }
 
 install_or_update() {
-    local action="$1" mode="$2" gmod="$3" silent="${4:-false}"
+    local action="$1" mode="$2" gmod="$3" silent="${4:-false}" patch_tool="${5:-false}"
     local extracted src candidate item name subdir destination
 
     ensure_game_closed "$silent"
@@ -245,6 +276,10 @@ install_or_update() {
     fi
 
     TMP_DIR="$(mktemp -d)"
+    if [[ "$patch_tool" == true ]]; then
+        run_gmod_patch_tool
+    fi
+
     printf '\nDownloading Vanilla UI+ %s...\n' "$VERSION"
     curl -fL --retry 2 --output "$TMP_DIR/$ARCHIVE" "$BRANCH_ARCHIVE_URL"
 
@@ -309,6 +344,7 @@ install_or_update() {
         printf 'Done. Installed to:\n%s\n' "$gmod"
     fi
     printf '\nLaunch Garry\x27s Mod to see your new menu.\n'
+    return 0
 }
 
 uninstall() {
@@ -327,7 +363,7 @@ uninstall() {
 }
 
 run_silent() {
-    local install_mode="" request_update=false request_uninstall=false
+    local install_mode="" request_update=false request_uninstall=false request_patch_tool=false
     local action mode gmod argument
 
     while (($#)); do
@@ -342,6 +378,7 @@ run_silent() {
                 [[ -z "$install_mode" ]] || { printf 'Choose only one install mode.\n' >&2; usage >&2; return 2; }
                 install_mode=addon
                 ;;
+            -P|--patch-gmod) request_patch_tool=true ;;
             -U|--update) request_update=true ;;
             -r|--uninstall) request_uninstall=true ;;
             -h|--help) usage; return 0 ;;
@@ -350,8 +387,8 @@ run_silent() {
     done
 
     if [[ "$request_uninstall" == true ]]; then
-        if [[ "$request_update" == true || -n "$install_mode" ]]; then
-            printf 'Uninstall cannot be combined with install or update options.\n' >&2
+        if [[ "$request_update" == true || -n "$install_mode" || "$request_patch_tool" == true ]]; then
+            printf 'Uninstall cannot be combined with install, update, or patch-tool options.\n' >&2
             usage >&2
             return 2
         fi
@@ -377,12 +414,12 @@ run_silent() {
     if [[ "$action" == uninstall ]]; then
         uninstall "$gmod" true
     else
-        install_or_update "$action" "$mode" "$gmod" true
+        install_or_update "$action" "$mode" "$gmod" true "$request_patch_tool"
     fi
 }
 
 main() {
-    local choice action mode gmod answer
+    local choice action mode gmod answer patch_tool
 
     if (($#)); then
         run_silent "$@"
@@ -425,7 +462,13 @@ main() {
         esac
 
         gmod="$(prompt_for_gmod)" || continue
-        install_or_update "$action" "$mode" "$gmod"
+        read -r -p "Download and run GModPatchTool before installing Vanilla UI+? [Y/n] " answer || true
+        if [[ "$answer" =~ ^[Nn]$ ]]; then
+            patch_tool=false
+        else
+            patch_tool=true
+        fi
+        install_or_update "$action" "$mode" "$gmod" false "$patch_tool"
     done
 }
 
