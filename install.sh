@@ -165,8 +165,24 @@ run_gmod_patch_tool() {
         return 1
     fi
     chmod u+x "$patch_dir/gmodpatchtool"
-    printf '\nRunning GModPatchTool. It will patch Garry\x27s Mod before Vanilla UI+ installs.\n'
+    printf '\nRunning GModPatchTool...\n'
     "$patch_dir/gmodpatchtool" --skip-exit-prompt
+}
+
+run_patch_tool_only() {
+    local dependency
+
+    ensure_game_closed
+    for dependency in curl unzip sha256sum awk; do
+        if ! command -v "$dependency" >/dev/null 2>&1; then
+            printf 'GModPatchTool setup requires %s. Install it with your package manager.\n' "$dependency" >&2
+            return 1
+        fi
+    done
+
+    TMP_DIR="$(mktemp -d)"
+    run_gmod_patch_tool
+    printf '\nGModPatchTool finished. Vanilla UI+ was not installed or updated.\n'
 }
 
 remove_files() {
@@ -429,7 +445,7 @@ main() {
     while true; do
         printf '\nVanilla UI+ %s\n' "$VERSION"
         printf 'github.com/qudeowl/vanilla-ui-overhaul\n\n'
-        printf '  1. Install\n  2. Update\n  3. Uninstall (Reset To Default)\n  4. Exit\n'
+        printf '  1. Install\n  2. Update\n  3. Uninstall (Reset To Default)\n  4. Download and run GModPatchTool (Recommended)\n  5. Exit\n'
         read -r -p "Select an option: " choice || return 0
 
         case "$choice" in
@@ -446,7 +462,11 @@ main() {
                 uninstall "$gmod"
                 continue
                 ;;
-            4) return 0 ;;
+            4)
+                run_patch_tool_only
+                return $?
+                ;;
+            5) return 0 ;;
             *) continue ;;
         esac
 
@@ -462,7 +482,7 @@ main() {
         esac
 
         gmod="$(prompt_for_gmod)" || continue
-        read -r -p "Download and run GModPatchTool before installing Vanilla UI+? (Reccomended) [Y/n] " answer || true
+        read -r -p "Download and run GModPatchTool before installing Vanilla UI+? (Recommended) [Y/n] " answer || true
         if [[ "$answer" =~ ^[Nn]$ ]]; then
             patch_tool=false
         else

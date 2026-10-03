@@ -14,7 +14,7 @@ Complete these steps before installing Vanilla UI+:
 
 1. In Steam, open Garry's Mod **Properties > Betas** and select the `x86-64` branch.
 2. Open **Properties > Compatibility**, enable **Force the use of a specific Steam Play compatibility tool**, and select **Proton Experimental**.
-3. Run `bash install.sh`. Accept the default **Yes** when asked to run [GModPatchTool](https://github.com/solsticegamestudios/GModPatchTool/releases); the script downloads, verifies, and runs it before installing Vanilla UI+.
+3. Run `bash install.sh`. Choose menu option **4** to download and run [GModPatchTool](https://github.com/solsticegamestudios/GModPatchTool/releases) by itself, or start an install and accept the default **Yes** to run it before Vanilla UI+ installs. The script verifies the download before running it.
 4. Choose **Standard** mode for full UI support; the add-ons method may not load all interface files.
 
 **Automatic (Recommended)**
