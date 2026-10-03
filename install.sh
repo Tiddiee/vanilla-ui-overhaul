@@ -4,7 +4,7 @@ set -Eeuo pipefail
 
 readonly VERSION="v1.4.1b"
 readonly ARCHIVE="Vanilla_UI_Overhaul_v1.4.1b.zip"
-readonly BRANCH_ARCHIVE_URL="https://github.com/qudeowl/vanilla-ui-overhaul/archive/refs/heads/test/1.4.1b.zip"
+readonly BRANCH_ARCHIVE_URL="https://github.com/Tiddiee/vanilla-ui-overhaul/archive/refs/heads/test/1.4.1b.zip"
 TMP_DIR=""
 
 cleanup() {

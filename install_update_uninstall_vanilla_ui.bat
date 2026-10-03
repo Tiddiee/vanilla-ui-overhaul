@@ -88,7 +88,7 @@ echo  Found Garry's Mod at: !gmod!
 echo  Downloading...
 set "tmp=%TEMP%\vuo_%RANDOM%"
 mkdir "!tmp!" 2>nul
-set "url=https://github.com/qudeowl/vanilla-ui-overhaul/archive/refs/heads/test/1.4.1b.zip"
+set "url=https://github.com/Tiddiee/vanilla-ui-overhaul/archive/refs/heads/test/1.4.1b.zip"
 curl -L --ssl-no-revoke -o "!tmp!\!archive!" "!url!"
 if not exist "!tmp!\!archive!" powershell -Command "[Net.ServicePointManager]::SecurityProtocol='Tls12';(New-Object Net.WebClient).DownloadFile('!url!','!tmp!\!archive!')"
 if not exist "!tmp!\!archive!" (
