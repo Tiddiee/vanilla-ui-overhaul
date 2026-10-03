@@ -2,18 +2,34 @@
 
 A redesigned main menu. Choose your own fonts, backgrounds, music and layout.
 
+Test branch build: `v1.4.1b`. The automatic installers on this branch download the branch snapshot; the published latest release remains v1.4.
+
 > Bug reports welcome via [Issues](https://github.com/qudeowl/vanilla-ui-overhaul/issues).
 
 ## Installation
 
 **Automatic (Recommended)**
 
-1. Download `install_update_uninstall_vanilla_ui.bat` from the [latest release](https://github.com/qudeowl/vanilla-ui-overhaul/releases/latest) and run it
+1. On Windows, run `install_update_uninstall_vanilla_ui.bat`. On Linux, run `bash install.sh` from a terminal (requires `curl` and `unzip`)
 2. Select your preferred setup when prompted
-3. The script finds your GMod folder automatically and installs the files
+3. The script finds your GMod folder automatically or asks for its path, then installs the files
 4. Launch Garry's Mod
 
 > Make sure the game is closed before running the installer.
+
+**Silent Linux commands**
+
+Run the script with one of these options to skip the interactive menus:
+
+```sh
+bash install.sh -a       # Standard install
+bash install.sh -A       # Addons-folder install
+bash install.sh -U -a    # Standard update
+bash install.sh -U -A    # Addons-folder update
+bash install.sh -r       # Uninstall
+```
+
+The script detects the Steam library automatically. If it cannot find Garry's Mod, set `GMOD_DIR` to the full `garrysmod` folder path. Silent commands fail rather than prompt if the game is running or its folder cannot be found.
 
 **Manual**
 
@@ -33,7 +49,7 @@ A redesigned main menu. Choose your own fonts, backgrounds, music and layout.
 
 **Automatic (Recommended)**
 
-1. Run the .bat
+1. Run the Windows `.bat` or Linux `.sh` script
 2. Select > 3. Uninstall (Reset To Default)
 3. Verify game files on Steam
 

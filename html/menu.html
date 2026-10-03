@@ -918,8 +918,8 @@
 
         vuoEl('vuo_mp_folder').addEventListener('click', function(){
             var ok=false;
-            try { var ta=document.createElement('textarea'); ta.value='steamapps\\common\\GarrysMod\\garrysmod\\sound\\vuo_music'; ta.style.cssText='position:fixed;opacity:0'; document.body.appendChild(ta); ta.select(); ok=document.execCommand('copy'); document.body.removeChild(ta); } catch(e){}
-            var m=vuoEl('vuo_mp_msg'); if(m){ m.textContent = ok?vuoT('copied'):'steamapps\\common\\GarrysMod\\...'; setTimeout(function(){ if(m) m.textContent=''; }, 3400); }
+            try { var ta=document.createElement('textarea'); ta.value='steamapps/common/GarrysMod/garrysmod/sound/vuo_music'; ta.style.cssText='position:fixed;opacity:0'; document.body.appendChild(ta); ta.select(); ok=document.execCommand('copy'); document.body.removeChild(ta); } catch(e){}
+            var m=vuoEl('vuo_mp_msg'); if(m){ m.textContent = ok?vuoT('copied'):'steamapps/common/GarrysMod/...'; setTimeout(function(){ if(m) m.textContent=''; }, 3400); }
         });
 
         function vuoSeekMark(){ vuoMusic.seekUntil = Date.now() + 2500; }
@@ -2026,7 +2026,7 @@
               '</div>'+
             '</div>'+
             '<div class="vuo-st-page" data-p="about">'+
-              '<div class="vuo-st-abouthead"><span class="vuo-st-abouttitle">Vanilla UI+ v1.4</span><span class="vuo-st-by"><span data-l="made_by">Made by</span> <b id="vuo_st_author" class="vuo-st-link">Qude</b></span></div>'+
+              '<div class="vuo-st-abouthead"><span class="vuo-st-abouttitle">Vanilla UI+ v1.4.1b</span><span class="vuo-st-by"><span data-l="made_by">Made by</span> <b id="vuo_st_author" class="vuo-st-link">Qude</b></span></div>'+
               '<div class="vuo-st-about" data-l="about_desc">A redesigned main menu. Choose your own fonts, backgrounds, music and layout.</div>'+
               '<div class="vuo-st-aboutlinks"><span id="vuo_st_gh" class="vuo-st-link" data-l="gh_page">GitHub page</span><span id="vuo_st_steam" class="vuo-st-link" data-l="steam_page">Steam page</span></div>'+
             '</div>'+

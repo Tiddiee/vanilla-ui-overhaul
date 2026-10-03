@@ -5,7 +5,7 @@ title Vanilla UI Overhaul
 :menu
 cls
 echo.
-echo  Vanilla UI+ v1.4
+echo  Vanilla UI+ v1.4.1b
 echo  github.com/qudeowl/vanilla-ui-overhaul
 echo.
 echo   1. Install
@@ -24,7 +24,7 @@ goto menu
 cls
 echo.
 echo  Update removes the files of every previous version, then installs
-echo  the latest release. Your settings, music, sounds, backgrounds and
+echo  test build v1.4.1b. Your settings, music, sounds, backgrounds and
 echo  fonts are kept.
 echo.
 echo   1. Continue
@@ -37,7 +37,7 @@ set "action=update"
 goto variant
 
 :variant
-set "archive=Vanilla_UI_Overhaul_v1.4.zip"
+set "archive=Vanilla_UI_Overhaul_v1.4.1b.zip"
 set "mode="
 cls
 echo.
@@ -88,7 +88,7 @@ echo  Found Garry's Mod at: !gmod!
 echo  Downloading...
 set "tmp=%TEMP%\vuo_%RANDOM%"
 mkdir "!tmp!" 2>nul
-set "url=https://github.com/qudeowl/vanilla-ui-overhaul/releases/download/vuo_v1.4/!archive!"
+set "url=https://github.com/qudeowl/vanilla-ui-overhaul/archive/refs/heads/test/1.4.1b.zip"
 curl -L --ssl-no-revoke -o "!tmp!\!archive!" "!url!"
 if not exist "!tmp!\!archive!" powershell -Command "[Net.ServicePointManager]::SecurityProtocol='Tls12';(New-Object Net.WebClient).DownloadFile('!url!','!tmp!\!archive!')"
 if not exist "!tmp!\!archive!" (
@@ -105,7 +105,7 @@ if "%action%"=="update" (
 
 echo  Installing...
 powershell -Command "Expand-Archive -Path '!tmp!\!archive!' -DestinationPath '!tmp!\out' -Force"
-powershell -NoProfile -Command "$d=Get-ChildItem '!tmp!\out' -Directory | Select-Object -First 1; if($d){$g=Join-Path $d.FullName 'garrysmod'; $src=if(Test-Path $g){$g}else{$d.FullName}; if('!mode!' -eq 'addon'){$dest=Join-Path '!gmod!' 'addons\garrysmod'; New-Item -ItemType Directory -Force -Path $dest | Out-Null; Get-ChildItem $src | Where-Object {'addons','workshop' -notcontains $_.Name} | Copy-Item -Destination $dest -Recurse -Force; foreach($x in 'addons','workshop'){$p=Join-Path $src $x; if(Test-Path $p){$t=Join-Path '!gmod!' $x; New-Item -ItemType Directory -Force -Path $t | Out-Null; Copy-Item (Join-Path $p '*') $t -Recurse -Force}}}else{Copy-Item (Join-Path $src '*') '!gmod!' -Recurse -Force}}"
+powershell -NoProfile -Command "$d=Get-ChildItem '!tmp!\out' -Directory | Select-Object -First 1; if($d){$g=Join-Path $d.FullName 'garrysmod'; $src=if(Test-Path $g){$g}else{$d.FullName}; if('!mode!' -eq 'addon'){$dest=Join-Path '!gmod!' 'addons\garrysmod'; New-Item -ItemType Directory -Force -Path $dest | Out-Null; Get-ChildItem $src | Where-Object {'html','lua','materials','resource','sound' -contains $_.Name} | Copy-Item -Destination $dest -Recurse -Force; foreach($x in 'addons','workshop'){$p=Join-Path $src $x; if(Test-Path $p){$t=Join-Path '!gmod!' $x; New-Item -ItemType Directory -Force -Path $t | Out-Null; Copy-Item (Join-Path $p '*') $t -Recurse -Force}}}else{Get-ChildItem $src | Where-Object {'addons','html','lua','materials','resource','sound','workshop' -contains $_.Name} | Copy-Item -Destination '!gmod!' -Recurse -Force}}"
 rd /s /q "!tmp!" 2>nul
 
 cls
